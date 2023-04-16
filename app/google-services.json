@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1065306562844",
+    "project_id": "testshinigami-1ac87",
+    "storage_bucket": "testshinigami-1ac87.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1065306562844:android:96fc48ad042ffe2e381ad9",
+        "android_client_info": {
+          "package_name": "com.example.shinigami"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1065306562844-ke118234o5agajeqiclccqalloafm5ma.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnYcAh_dUdseLAtSm2OgBlWAEcpKid5G8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1065306562844-ke118234o5agajeqiclccqalloafm5ma.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
