@@ -31,8 +31,8 @@ public class MainActivity extends AppCompatActivity {
     private CollectionReference userRef = db.collection("Users");
 
     private FbHelper fbHelper;
-    private ArrayList<User> userList = new ArrayList<User>();
-    private ArrayList<House> houseList = new ArrayList<House>();
+    private static ArrayList<User> userList = new ArrayList<User>();
+    private static ArrayList<House> houseList = new ArrayList<House>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,11 +56,6 @@ public class MainActivity extends AppCompatActivity {
         houseList.add(house2);
         houseList.add(house3);
 
-        // connecting the house and user
-        house1.addUser(user1);
-        house1.addUser(user2);
-        house1.addUser(user3);
-
         for(House house: houseList) {
             fbHelper.addHouseWithId(house);
         }
@@ -68,16 +63,17 @@ public class MainActivity extends AppCompatActivity {
         for(User user: userList) {
             fbHelper.addUserWithId(user);
         }
-
         fbHelper.addUserToHouse(1,1);
-//        fbHelper.addUserWithId(user1);
-//        fbHelper.addUserWithId(user2);
-//        fbHelper.addUserWithId(user3);
+        fbHelper.addUserToHouse(1,2);
+        fbHelper.addUserToHouse(2,3);
+    }
 
-//        fbHelper.getUsers();
-
-//        fbHelper.addHouseWithId(house1);
-//        fbHelper.addHouseWithId(house2);
-//        fbHelper.addHouseWithId(house3);
+    public static User getUserById(int Id) {
+        for (User user: userList) {
+            if(user.getUserId() == Id) {
+                return user;
+            }
+        }
+        return null;
     }
 }
