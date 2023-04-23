@@ -8,6 +8,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -16,6 +17,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -172,39 +174,110 @@ public class FbHelper {
 
     public void addUserToHouse(int houseId, int userId) {
         DocumentReference houseReference = db.collection("Houses").document(houseId+"");
-        houseReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d(TAG, "House with id"+ houseId +"exists: "+document);
-                    } else {
-                        Log.d(TAG, "House with id"+ houseId +"does not exists: "+ document);
-                    }
-                } else {
-                    Log.d(TAG, "Failed with: ", task.getException());
-                }
-            }
-        });
-
         DocumentReference userReference = db.collection("Users").document(userId+"");
-        userReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d(TAG, "User with id"+ userId +"exists: "+document);
-                    } else {
-                        Log.d(TAG, "User with id"+ userId +"does not exists: "+ document);
+
+        // Create a list to hold the tasks
+        List<Task<DocumentSnapshot>> tasks = new ArrayList<>();
+
+        // Add house and user tasks to the list
+        tasks.add(houseReference.get());
+        tasks.add(userReference.get());
+
+        // Wait for all tasks to complete successfully
+        Tasks.whenAllSuccess(tasks)
+                .addOnCompleteListener(new OnCompleteListener<List<Object>>() {
+                    @Override
+                    public void onComplete(@NonNull Task<List<Object>> task) {
+                        if (task.isSuccessful()) {
+                            boolean houseExist = false;
+                            boolean userExist = false;
+
+                            // Get the results of the tasks
+                            List<Object> results = task.getResult();
+                            DocumentSnapshot houseDocument = (DocumentSnapshot) results.get(0);
+                            DocumentSnapshot userDocument = (DocumentSnapshot) results.get(1);
+
+                            // Check if house document exists
+                            if (houseDocument.exists()) {
+                                Log.d(TAG, "House with id "+ houseId +" exists: "+ houseDocument);
+                                houseExist = true;
+                            } else {
+                                Log.d(TAG, "House with id "+ houseId +" does not exist: "+ houseDocument);
+                            }
+
+                            // Check if user document exists
+                            if (userDocument.exists()) {
+                                Log.d(TAG, "User with id "+ userId +" exists: "+ userDocument);
+                                userExist = true;
+                            } else {
+                                Log.d(TAG, "User with id "+ userId +" does not exist: "+ userDocument);
+                            }
+
+                            // Check if both house and user exist and execute logic
+                            if (houseExist && userExist) {
+                                Log.d(TAG, "Both exist");
+                                // Main logic execution
+                                User retrievedUser = MainActivity.getUserById(userId);
+                                houseReference.collection("houseUsers").document(userId+"").set(retrievedUser);
+
+                            } else {
+                                Log.d(TAG, "Both do not exist");
+                            }
+                        } else {
+                            Log.d(TAG, "Failed with: ", task.getException());
+                        }
                     }
-                } else {
-                    Log.d(TAG, "Failed with: ", task.getException());
-                }
-            }
-        });
-        //Log.d(TAG, "house ref: "+houseReference+"");
+                });
+        }
+
+    public void houseExist(int houseId) {
+
     }
+
+//    public void addUserToHouse(int houseId, int userId) {
+//        boolean houseExist = false;
+//        boolean userExist = false;
+//
+//        DocumentReference houseReference = db.collection("Houses").document(houseId+"");
+//        houseReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    DocumentSnapshot document = task.getResult();
+//                    if (document.exists()) {
+//                        Log.d(TAG, "House with id "+ houseId +"exists: "+document);
+//                    } else {
+//                        Log.d(TAG, "House with id "+ houseId +"does not exists: "+ document);
+//                    }
+//                } else {
+//                    Log.d(TAG, "Failed with: ", task.getException());
+//                }
+//            }
+//        });
+//
+//        DocumentReference userReference = db.collection("Users").document(userId+"");
+//        userReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    DocumentSnapshot document = task.getResult();
+//                    if (document.exists()) {
+//                        Log.d(TAG, "User with id "+ userId +"exists: "+document);
+//                    } else {
+//                        Log.d(TAG, "User with id "+ userId +"does not exists: "+ document);
+//                    }
+//                } else {
+//                    Log.d(TAG, "Failed with: ", task.getException());
+//                }
+//            }
+//        });
+//
+//        if(houseExist && userExist) {
+//            Log.d(TAG, "both exsit");
+//        } else {
+//            Log.d(TAG, "both does not exsit");
+//        }
+//
+//    }
 
 }
