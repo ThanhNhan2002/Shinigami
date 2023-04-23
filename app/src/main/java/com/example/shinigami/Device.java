@@ -9,10 +9,6 @@ public class Device {
     private String deviceDesc;
     private boolean isWorking;
     private HashMap<String, String> deviceStatuses = new HashMap<>();
-//        user.put("id", u.getUserId());
-//        user.put("firstName ", u.getFirstName());
-//        user.put("lastName", u.getLastName());
-//        user.put("dob", u.getDob());
 
     public Device(int deviceId,String deviceName, String deviceDesc, boolean isWorking) {
         this.deviceId = deviceId;
@@ -30,5 +26,25 @@ public class Device {
 
     public void  setStatus(String statusName, String status) {
         deviceStatuses.put(statusName, status);
+    }
+
+    public int getDeviceId() {
+        return deviceId;
+    }
+
+    public String getDeviceName() {
+        return deviceName;
+    }
+
+    public String getDeviceDesc() {
+        return deviceDesc;
+    }
+
+    public boolean getIsWorking() {
+        return isWorking;
+    }
+
+    public HashMap<String, String> getDeviceStatuses() {
+        return deviceStatuses;
     }
 }

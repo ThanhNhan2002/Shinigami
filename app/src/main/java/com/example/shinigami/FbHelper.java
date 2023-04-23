@@ -47,15 +47,17 @@ public class FbHelper {
         int houseId = h.getHouseId();
         String houseAdress = h.getHouseAddress();
         ArrayList<User> houseUsers = h.getUsers();
+        ArrayList<Device> houseDevices = h.getDevices();
 
         Map<String, Object> house = new HashMap<>();
         house.put("houseId", houseId);
         house.put("houseAddress ", houseAdress);
 
-        // Add a new document with a generated ID
+        // Add a new document with id as the houseId
         db.collection("Houses").document(""+h.getHouseId())
                 .set(house);
 
+        // add users
         for (int i = 0; i <  houseUsers.size(); i++) {
             User currentUser =  houseUsers.get(i);
 
@@ -74,32 +76,30 @@ public class FbHelper {
                     .collection("users").document(""+userId).set(dbUser);
         }
 
-//        user1.put("userId", h.getUsers().get(0).getUserId());
-//        user1.put("userFirstName", h.getUsers().get(0).getFirstName());
+        // add devices
+        if (houseDevices != null) {
+            for (int i = 0; i <  houseDevices.size(); i++) {
+                Device currentDevice =  houseDevices.get(i);
+
+                int deviceId = currentDevice.getDeviceId();
+                String deviceName = currentDevice.getDeviceName();
+                String deviceDesc = currentDevice.getDeviceDesc();
+                boolean isWorking = currentDevice.getIsWorking();
+                HashMap<String, String> deviceStatuses = currentDevice.getDeviceStatuses();
+
+                Map<String, Object> dbDevice = new HashMap<>();
+                dbDevice.put("deviceId", deviceId);
+                dbDevice.put("deviceName", deviceName);
+                dbDevice.put("deviceDesc", deviceDesc);
+                dbDevice.put("isWorking", isWorking);
+                dbDevice.put("deviceStatuses", deviceStatuses);
+
+                db.collection("Houses").document(""+h.getHouseId())
+                        .collection("devices").document(""+deviceId).set(dbDevice);
+            }
+        }
 
 
-
-
-
-//                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-//                    @Override
-//                    public void onSuccess(DocumentReference documentReference) {
-//                        Log.d(TAG, "House DocumentSnapshot added with ID: " + documentReference.getId());
-//
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Log.w(TAG, "Error adding House document", e);
-//                    }
-//                });
-
-//        Map<String, Object> user1 = new HashMap<>();
-//        user1.put("houseId", h.getHouseId());
-//        user1.put("houseAddress ", h.getHouseAddress());
-
-//        db.collection("Houses").document("HouseUsers").add(house);
     }
 
     public void addUserToHouse(int houseId, int userId) {

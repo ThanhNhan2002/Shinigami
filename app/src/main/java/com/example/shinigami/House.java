@@ -7,6 +7,7 @@ public class House {
     private int houseId;
     private String houseAddress;
     private ArrayList<User> userList;
+    private ArrayList<Device> deviceList;
 
     public House(int houseId, String houseAddress, ArrayList<User> userList) {
         this.houseId = houseId;
@@ -29,13 +30,17 @@ public class House {
         return this.houseAddress;
     }
 
+    public ArrayList<User> getUsers() {
+        return this.userList;
+    }
+    public ArrayList<Device> getDevices() {
+        return this.deviceList;
+    }
+
+
+    //just-in-case functions
     public boolean addUser(User user) {
         this.userList.add(user);
         return true;
     }
-
-    public ArrayList<User> getUsers() {
-        return this.userList;
-    }
-
 }
