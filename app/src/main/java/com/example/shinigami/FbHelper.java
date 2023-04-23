@@ -29,31 +29,7 @@ public class FbHelper {
         this.db = db;
     }
 
-    public void addUser(User u) {
-        Map<String, Object> user = new HashMap<>();
-        user.put("id", u.getUserId());
-        user.put("firstName ", u.getFirstName());
-        user.put("lastName", u.getLastName());
-        user.put("dob", u.getDob());
-
-        // Add a new document with a generated ID
-        db.collection("Users")
-                .add(user)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG, "User DocumentSnapshot added with ID: " + documentReference.getId());
-
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error adding user document", e);
-                    }
-                });
-    }
-
+    // add a user using userId as Firebase document Id
     public void addUserWithId(User u) {
         Map<String, Object> user = new HashMap<>();
         user.put("id", u.getUserId());
@@ -66,53 +42,7 @@ public class FbHelper {
                 .set(user);
     }
 
-    public void getUsers () {
-//        DocumentReference document = db.collection("Users").document("AOgFm3Si1WXALt1DCj7o");
-//        document.get().addOnSuccessListener()
-        db.collection("Users")
-                .get ( )
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-                            }
-                        } else {
-                            Log.w(TAG, "Error getting documents.", task.getException());
-                        }
-                    }
-                } ) ;
-    }
-
-    public void addHouse(House h) {
-        Map<String, Object> house = new HashMap<>();
-        house.put("houseId", h.getHouseId());
-        house.put("houseAddress ", h.getHouseAddress());
-
-        // Add a new document with a generated ID
-        db.collection("Houses")
-                .add(house)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG, "House DocumentSnapshot added with ID: " + documentReference.getId());
-
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error adding House document", e);
-                    }
-                });
-
-//        Map<String, Object> user1 = new HashMap<>();
-//        user1.put("houseId", h.getHouseId());
-//        user1.put("houseAddress ", h.getHouseAddress());
-
-//        db.collection("Houses").document("HouseUsers").add(house);
-    }
+    // add a house using houseId as Firebase document Id
     public void addHouseWithId(House h) {
         int houseId = h.getHouseId();
         String houseAdress = h.getHouseAddress();
@@ -230,54 +160,79 @@ public class FbHelper {
                 });
         }
 
-    public void houseExist(int houseId) {
-
+    // could-be-use-in-the-future functions
+    public void getUsers () {
+//        DocumentReference document = db.collection("Users").document("AOgFm3Si1WXALt1DCj7o");
+//        document.get().addOnSuccessListener()
+        db.collection("Users")
+                .get ( )
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                            }
+                        } else {
+                            Log.w(TAG, "Error getting documents.", task.getException());
+                        }
+                    }
+                } ) ;
     }
 
-//    public void addUserToHouse(int houseId, int userId) {
-//        boolean houseExist = false;
-//        boolean userExist = false;
-//
-//        DocumentReference houseReference = db.collection("Houses").document(houseId+"");
-//        houseReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                if (task.isSuccessful()) {
-//                    DocumentSnapshot document = task.getResult();
-//                    if (document.exists()) {
-//                        Log.d(TAG, "House with id "+ houseId +"exists: "+document);
-//                    } else {
-//                        Log.d(TAG, "House with id "+ houseId +"does not exists: "+ document);
-//                    }
-//                } else {
-//                    Log.d(TAG, "Failed with: ", task.getException());
-//                }
-//            }
-//        });
-//
-//        DocumentReference userReference = db.collection("Users").document(userId+"");
-//        userReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                if (task.isSuccessful()) {
-//                    DocumentSnapshot document = task.getResult();
-//                    if (document.exists()) {
-//                        Log.d(TAG, "User with id "+ userId +"exists: "+document);
-//                    } else {
-//                        Log.d(TAG, "User with id "+ userId +"does not exists: "+ document);
-//                    }
-//                } else {
-//                    Log.d(TAG, "Failed with: ", task.getException());
-//                }
-//            }
-//        });
-//
-//        if(houseExist && userExist) {
-//            Log.d(TAG, "both exsit");
-//        } else {
-//            Log.d(TAG, "both does not exsit");
-//        }
-//
-//    }
+    // add a user using auto-generated Firebase document Id
+    public void addUser(User u) {
+        Map<String, Object> user = new HashMap<>();
+        user.put("id", u.getUserId());
+        user.put("firstName ", u.getFirstName());
+        user.put("lastName", u.getLastName());
+        user.put("dob", u.getDob());
 
+        // Add a new document with a generated ID
+        db.collection("Users")
+                .add(user)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d(TAG, "User DocumentSnapshot added with ID: " + documentReference.getId());
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error adding user document", e);
+                    }
+                });
+    }
+
+    // add a house using auto-generated Firebase document Id
+    public void addHouse(House h) {
+        Map<String, Object> house = new HashMap<>();
+        house.put("houseId", h.getHouseId());
+        house.put("houseAddress ", h.getHouseAddress());
+
+        // Add a new document with a generated ID
+        db.collection("Houses")
+                .add(house)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d(TAG, "House DocumentSnapshot added with ID: " + documentReference.getId());
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error adding House document", e);
+                    }
+                });
+
+//        Map<String, Object> user1 = new HashMap<>();
+//        user1.put("houseId", h.getHouseId());
+//        user1.put("houseAddress ", h.getHouseAddress());
+
+//        db.collection("Houses").document("HouseUsers").add(house);
+    }
 }
