@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
         fbHelper.addUserToHouse(2,3);
     }
 
+
     public static User getUserById(int Id) {
         for (User user: userList) {
             if(user.getUserId() == Id) {

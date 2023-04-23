@@ -8,7 +8,6 @@ public class House {
     private String houseAddress;
     private ArrayList<User> userList;
 
-
     public House(int houseId, String houseAddress, ArrayList<User> userList) {
         this.houseId = houseId;
         this.houseAddress = houseAddress;
