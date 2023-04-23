@@ -4,6 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.NonNull;
 
 import android.os.Bundle;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import android.util.Log;
@@ -23,11 +26,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 
 public class MainActivity extends AppCompatActivity {
+    private String TAG = "MainActivity";
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference userRef = db.collection("Users");
 
-    private String TAG = "FireStore";
     private FbHelper fbHelper;
+    private ArrayList<User> userList = new ArrayList<User>();
+    private ArrayList<House> houseList = new ArrayList<House>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +41,43 @@ public class MainActivity extends AppCompatActivity {
 
         //make a FbHelper object
         fbHelper = new FbHelper(db);
-        fbHelper.addUser(new User( 1,"Thanh Nhan", "Nguyen", "11-02-2002"));
-        fbHelper.addUser(new User( 2,"Hamas", "Massood", "11-02-2002"));
-        fbHelper.addUser(new User( 3,"Page", "Perret", "11-02-2002"));
 
-        fbHelper.getUsers();
+        User user1 = new User( 1,"Thanh Nhan", "Nguyen", "11-02-2002");
+        User user2 = new User(2,"Hamas", "Massood", "11-02-2002");
+        User user3 = new User(3,"Page Test 23-Apr Wireless connection", "Perret", "11-02-2002");
+        userList.add(user1);
+        userList.add(user2);
+        userList.add(user3);
+
+        House house1 = new House( 1,"06 Bundoora Test Override");
+        House house2 = new House( 2,"07 Bundoora");
+        House house3 = new House(3,"08 Bundoora");
+        houseList.add(house1);
+        houseList.add(house2);
+        houseList.add(house3);
+
+        // connecting the house and user
+        house1.addUser(user1);
+        house1.addUser(user2);
+        house1.addUser(user3);
+
+        for(House house: houseList) {
+            fbHelper.addHouseWithId(house);
+        }
+
+        for(User user: userList) {
+            fbHelper.addUserWithId(user);
+        }
+
+        fbHelper.addUserToHouse(1,1);
+//        fbHelper.addUserWithId(user1);
+//        fbHelper.addUserWithId(user2);
+//        fbHelper.addUserWithId(user3);
+
+//        fbHelper.getUsers();
+
+//        fbHelper.addHouseWithId(house1);
+//        fbHelper.addHouseWithId(house2);
+//        fbHelper.addHouseWithId(house3);
     }
 }
