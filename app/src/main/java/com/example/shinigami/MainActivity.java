@@ -36,9 +36,9 @@ public class MainActivity extends AppCompatActivity {
 
         //make a FbHelper object
         fbHelper = new FbHelper(db);
-        fbHelper.addUser(new User( 1,"Thanh Nhan", "Nguyen", "11-02-2002"));
-        fbHelper.addUser(new User( 2,"Hamas", "Massood", "11-02-2002"));
-        fbHelper.addUser(new User( 3,"Page", "Perret", "11-02-2002"));
+        fbHelper.addUser(new User( 1,"Thanhhh Nhan", "Nguyen", "11-02-2002"));
+        fbHelper.addUser(new User( 2,"Hamaaaas", "Masood", "11-02-2002"));
+        fbHelper.addUser(new User( 3,"Pppage", "Perret", "11-02-2002"));
 
         fbHelper.getUsers();
     }
