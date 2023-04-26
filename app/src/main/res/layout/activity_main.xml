@@ -4,15 +4,80 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#333333"
     tools:context=".MainActivity">
-<!--test-->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/gridLayout"
+        android:rowCount="2"
+        android:columnCount="2"
+        android:layout_margin="30dp"
+        tools:ignore="ExtraText">
+
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_gravity="fill"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="30sp"
+            android:textSize="18sp"
+            android:text="Home Cam"
+            app:layout_constraintDimensionRatio="1:1"/>
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_gravity="fill"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="30sp"
+            android:textSize="18sp"
+            android:src="@drawable/tv"
+            android:text="Tv"
+            android:scaleType="centerCrop"
+            app:layout_constraintDimensionRatio="1:1"/>
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_gravity="fill"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="30sp"
+            android:textSize="18sp"
+            android:text="Fridge"
+            app:layout_constraintDimensionRatio="1:1"/>
+
+        <Button
+            android:id="@+id/button4"
+            android:layout_gravity="fill"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="30sp"
+            android:textSize="18sp"
+            android:text="Thermostat"
+            app:layout_constraintDimensionRatio="1:1"/>
+
+        <Button
+            android:id="@+id/button5"
+            android:layout_gravity="fill"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="30sp"
+            android:textSize="18sp"
+            android:text="Add Item"
+            app:layout_constraintDimensionRatio="1:1"/>
+    </GridLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
