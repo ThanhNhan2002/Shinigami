@@ -253,11 +253,6 @@ public class FbHelper {
 
     public void addDeviceToHouse(int houseId, int deviceId) {
         Log.d(TAG, "addDeviceToHouse");
-//        int deviceId = device.getDeviceId();
-//        String deviceName = device.getDeviceName();
-//        String deviceDesc = device.getDeviceDesc();
-//        boolean isWorking = device.getIsWorking();
-
 
         DocumentReference houseReference = db.collection("Houses").document(houseId+"");
         DocumentReference deviceReference = db.collection("Devices").document(deviceId+"");
@@ -303,19 +298,8 @@ public class FbHelper {
                             if (houseExist && deviceExist) {
                                 Log.d(TAG, "Both house and device exist");
                                 // Main logic execution
-//                                Device device = deviceDocument.toObject(Device.class);
-                                Log.d(TAG, "Retrieved device "+ deviceDocument.get("deviceId"));
-
-
-//                                for (QueryDocumentSnapshot document : Objects.requireNonNull(houseDocument)) {
-//                                    deleteBookWithId(document.getId());
-//                                    Log.d(TAG, "Delete book with isbn " + Objects.requireNonNull(document.get("ISBN")).toString());
-//                                }
-
-
-                                //Device retrievedDevice = MainActivity.getDeviceById(deviceId);
-//                                houseReference.collection("houseUsers").document(userId+"").set(retrievedUser);
-
+                                Device retrievedDevice = MainActivity.getDeviceById(deviceId);
+                                houseReference.collection("houseDevices").document(deviceId+"").set(retrievedDevice);
                             } else {
                                 Log.d(TAG, "Both house and device do not exist");
                             }

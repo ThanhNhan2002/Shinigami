@@ -25,7 +25,7 @@ public class Device {
         this.isWorking = false;
     }
 
-    public void  setStatus(String statusName, String status) {
+    public void addStatus(String statusName, String status) {
         deviceStatuses.put(statusName, status);
     }
 
