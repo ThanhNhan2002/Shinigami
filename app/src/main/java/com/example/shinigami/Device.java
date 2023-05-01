@@ -5,6 +5,7 @@ import java.util.Map;
 
 public class Device {
     private int deviceId;
+
     private String deviceName;
     private String deviceDesc;
     private boolean isWorking;
@@ -17,7 +18,7 @@ public class Device {
         this.isWorking = isWorking;
     }
 
-    public Device(int deviceId, String deviceNamme, String deviceDesc) {
+    public Device(int deviceId, String deviceName, String deviceDesc) {
         this.deviceId = deviceId;
         this.deviceName = deviceName;
         this.deviceDesc = deviceDesc;

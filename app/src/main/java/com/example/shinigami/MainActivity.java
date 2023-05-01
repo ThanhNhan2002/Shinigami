@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private FbHelper fbHelper;
     private static ArrayList<User> userList = new ArrayList<User>();
     private static ArrayList<House> houseList = new ArrayList<House>();
+    private static ArrayList<Device> deviceList = new ArrayList<Device>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +57,10 @@ public class MainActivity extends AppCompatActivity {
         houseList.add(house2);
         houseList.add(house3);
 
+        Device device1 = new Device(1, "TV", "Thanh Nhan TV");
+        deviceList.add(device1);
+
+
         for(House house: houseList) {
             fbHelper.addHouseWithId(house);
         }
@@ -63,9 +68,16 @@ public class MainActivity extends AppCompatActivity {
         for(User user: userList) {
             fbHelper.addUserWithId(user);
         }
+
+        for(Device device: deviceList) {
+            fbHelper.addDeviceWithId(device);
+        }
+
         fbHelper.addUserToHouse(1,1);
         fbHelper.addUserToHouse(1,2);
         fbHelper.addUserToHouse(2,3);
+
+        fbHelper.addDeviceToHouse(1, 1);
     }
 
 

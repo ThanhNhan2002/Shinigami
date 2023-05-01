@@ -95,7 +95,7 @@ public class FbHelper {
                 dbDevice.put("deviceStatuses", deviceStatuses);
 
                 db.collection("Houses").document(""+h.getHouseId())
-                        .collection("devices").document(""+deviceId).set(dbDevice);
+                        .collection("houseDevices").document(""+deviceId).set(dbDevice);
             }
         }
 
@@ -159,6 +159,21 @@ public class FbHelper {
                     }
                 });
         }
+
+    public void addDeviceWithId(Device device) {
+        Map<String, Object> deviceInfo = new HashMap<>();
+        deviceInfo.put("deviceId", device.getDeviceId());
+        deviceInfo.put("deviceName ", device.getDeviceName());
+        deviceInfo.put("deviceDesc", device.getDeviceDesc());
+        deviceInfo.put("isWorking", device.getIsWorking());
+
+        // Add a new device with Firebase Id as the Id
+        db.collection("Devices")
+                .document(""+device.getDeviceId())
+                .set(deviceInfo);
+    }
+
+
 
     // could-be-use-in-the-future functions
     public void getUsers () {
@@ -234,5 +249,80 @@ public class FbHelper {
 //        user1.put("houseAddress ", h.getHouseAddress());
 
 //        db.collection("Houses").document("HouseUsers").add(house);
+    }
+
+    public void addDeviceToHouse(int houseId, int deviceId) {
+        Log.d(TAG, "addDeviceToHouse");
+//        int deviceId = device.getDeviceId();
+//        String deviceName = device.getDeviceName();
+//        String deviceDesc = device.getDeviceDesc();
+//        boolean isWorking = device.getIsWorking();
+
+
+        DocumentReference houseReference = db.collection("Houses").document(houseId+"");
+        DocumentReference deviceReference = db.collection("Devices").document(deviceId+"");
+
+        // Create a list to hold the tasks
+        List<Task<DocumentSnapshot>> tasks = new ArrayList<>();
+
+        // Add house and user tasks to the list
+        tasks.add(houseReference.get());
+        tasks.add(deviceReference.get());
+
+        // Wait for all tasks to complete successfully
+        Tasks.whenAllSuccess(tasks)
+                .addOnCompleteListener(new OnCompleteListener<List<Object>>() {
+                    @Override
+                    public void onComplete(@NonNull Task<List<Object>> task) {
+                        if (task.isSuccessful()) {
+                            boolean houseExist = false;
+                            boolean deviceExist = false;
+
+                            // Get the results of the tasks
+                            List<Object> results = task.getResult();
+                            DocumentSnapshot houseDocument = (DocumentSnapshot) results.get(0);
+                            DocumentSnapshot deviceDocument = (DocumentSnapshot) results.get(1);
+
+                            // Check if house document exists
+                            if (houseDocument.exists()) {
+                                Log.d(TAG, "House with id "+ houseId +" exists: "+ houseDocument);
+                                houseExist = true;
+                            } else {
+                                Log.d(TAG, "House with id "+ houseId +" does not exist: "+ houseDocument);
+                            }
+
+                            // Check if device document exists
+                            if (deviceDocument.exists()) {
+                                Log.d(TAG, "Device with id "+ deviceId +" exists: "+ deviceDocument);
+                                deviceExist = true;
+                            } else {
+                                Log.d(TAG, "Device with id "+ deviceId +" does not exist: "+ deviceDocument);
+                            }
+
+                            // Check if both house and user exist and execute logic
+                            if (houseExist && deviceExist) {
+                                Log.d(TAG, "Both house and device exist");
+                                // Main logic execution
+//                                Device device = deviceDocument.toObject(Device.class);
+                                Log.d(TAG, "Retrieved device "+ deviceDocument.get("deviceId"));
+
+
+//                                for (QueryDocumentSnapshot document : Objects.requireNonNull(houseDocument)) {
+//                                    deleteBookWithId(document.getId());
+//                                    Log.d(TAG, "Delete book with isbn " + Objects.requireNonNull(document.get("ISBN")).toString());
+//                                }
+
+
+                                //Device retrievedDevice = MainActivity.getDeviceById(deviceId);
+//                                houseReference.collection("houseUsers").document(userId+"").set(retrievedUser);
+
+                            } else {
+                                Log.d(TAG, "Both house and device do not exist");
+                            }
+                        } else {
+                            Log.d(TAG, "Failed with: ", task.getException());
+                        }
+                    }
+                });
     }
 }
