@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">frontend2</string>
+    <string name="thermostat_description">Thermostat Button</string>
+    <string name="television_description">Tv Button</string>
+    <string name="homecam_description">Home Camera Button</string>
+    <string name="fridge_description">Refrigerator button</string>
 </resources>
