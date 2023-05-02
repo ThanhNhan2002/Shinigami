@@ -41,6 +41,8 @@ public class AuthedHomeActivity extends AppCompatActivity {
 
         if(account!=null) {
             String name = account.getDisplayName();
+            String userId = account.getId();
+            String email = account.getEmail();
             nameTextView.setText(name);
         }
 
