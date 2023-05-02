@@ -46,6 +46,13 @@ public class MainActivity extends AppCompatActivity {
         User user1 = new User( 1,"Thanh Nhan", "Nguyen", "11-02-2002");
         User user2 = new User(2,"Hamas", "Massood", "11-02-2002");
         User user3 = new User(3,"Page Test 23-Apr Wireless connection", "Perret", "11-02-2002");
+//        Example for Hamas
+//        int user1Id = user1.getUserId();
+//        String user1FirstName = user1.getFirstName();
+//        String user1LastName = user1.getFirstName();
+//        String user1Dob = user1.getDob();
+
+
         userList.add(user1);
         userList.add(user2);
         userList.add(user3);
@@ -53,6 +60,11 @@ public class MainActivity extends AppCompatActivity {
         House house1 = new House( 1,"06 Bundoora Test Override");
         House house2 = new House( 2,"07 Bundoora");
         House house3 = new House(3,"08 Bundoora");
+//                Example for Hamas
+//        int house1Id = house1.getHouseId();
+//        String house1Address = house1.getHouseAddress();  // @Hamas you can use the address as the house name
+//        ArrayList<User> house1UserList = house1.getUsers();
+//        ArrayList<Device> house1DeviceList = house1.getDevices();
         houseList.add(house1);
         houseList.add(house2);
         houseList.add(house3);
@@ -61,6 +73,11 @@ public class MainActivity extends AppCompatActivity {
         Device camera = new Device(1, "Camera", "Living Room Camera");
         camera.addStatus("isOn", "yes");
         camera.addStatus("motionDetected", "no");
+//        Example for Hamas
+//        String deviceName = camera.getDeviceName();
+//        String deviceDesc = camera.getDeviceDesc();
+//        boolean isWorking = camera.getIsWorking();
+//        HashMap<String, String> statusList = camera.getDeviceStatuses();
 
 // TV device
         Device tv = new Device(2, "TV", "Bedroom TV");
