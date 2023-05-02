@@ -79,7 +79,7 @@
                     android:background="#71B4FF"
                     android:padding="12dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/fridge_round"
+                    android:src="@drawable/fridge"
                     android:text="Fridge"
                     android:textSize="18sp"
                     android:contentDescription="Fridge button"
