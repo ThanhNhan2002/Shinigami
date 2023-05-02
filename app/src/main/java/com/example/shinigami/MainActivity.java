@@ -175,6 +175,7 @@ public class MainActivity extends AppCompatActivity {
         return null;
     }
 
+    // Google authentication
     private void GoogleSignInHelper() {
         Intent intent = googleSignInClient.getSignInIntent();
         startActivityForResult(intent, 100);
