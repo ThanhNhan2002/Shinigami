@@ -22,7 +22,7 @@ public class Device {
         this.deviceId = deviceId;
         this.deviceName = deviceName;
         this.deviceDesc = deviceDesc;
-        this.isWorking = false;
+        this.isWorking = true;
     }
 
     public void addStatus(String statusName, String status) {

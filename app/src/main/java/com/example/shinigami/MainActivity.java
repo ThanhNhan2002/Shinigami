@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
         thermometer.addStatus("temperature", "22");
         thermometer.addStatus("humidity", "40");
 
+
 // Add devices to list
         deviceList.add(camera);
         deviceList.add(tv);
