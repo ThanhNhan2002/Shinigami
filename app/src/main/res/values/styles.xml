@@ -1,7 +1,15 @@
 <resources>
 
+
+    <style name="CustomButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:background">@drawable/edittext_background</item>
+        <item name="android:textColor">#ffffff</item>
+    </style>
+
     <style name="Widget.Theme.Shinigami.ButtonBar.Fullscreen" parent="">
         <item name="android:background">@color/black_overlay</item>
         <item name="android:buttonBarStyle">?android:attr/buttonBarStyle</item>
     </style>
+
+
 </resources>
