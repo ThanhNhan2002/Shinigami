@@ -58,6 +58,9 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
     public void onUserInfoEntered(String firstName, String lastName, String dateOfBirth) {   //Thanh this function has values already in it from fragment
         User user4 = new User( 4,firstName, lastName, dateOfBirth);
 
+        userList.add(user4);
+        fbHelper.addUserWithId(user4);
+        Log.d("Fragment", firstName);
     }
 
 

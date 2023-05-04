@@ -81,6 +81,15 @@ public class Fragment3 extends Fragment {
         void onUserInfoEntered(String firstName, String lastName, String dob);
     }
 
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            onUserInfoEnteredListener = (OnUserInfoEnteredListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnUserInfoEnteredListener");
+        }
+    }
 
 
     @Override
