@@ -3,9 +3,13 @@ package com.example.shinigami;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.NonNull;
-
+import androidx.fragment.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+
+import android.view.View;
+import android.widget.Button;
+
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,7 +39,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Fragment3.OnUserInfoEnteredListener {
     private String TAG = "MainActivity";
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference userRef = db.collection("Users");
@@ -51,10 +55,36 @@ public class MainActivity extends AppCompatActivity {
     GoogleSignInOptions googleSignInOptions;
     GoogleSignInClient googleSignInClient;
 
-    @Override
+    public void onUserInfoEntered(String firstName, String lastName, String dateOfBirth) {   //Thanh this function has values already in it from fragment
+        User user4 = new User( 4,firstName, lastName, dateOfBirth);
+
+        userList.add(user4);
+        fbHelper.addUserWithId(user4);
+        Log.d("Fragment", firstName);
+    }
+
+
+
+    private Button loginButton;
+        @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+            loginButton = findViewById(R.id.login_button);
+
+            loginButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Instantiate the new fragment
+                    Fragment newFragment = new Fragment3();
+
+                    // Replace the existing fragment in the container with the new one
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.mainLayout, newFragment)
+                            .commit();
+                }
+                });
 
         //make a FbHelper object
         fbHelper = new FbHelper(db);
