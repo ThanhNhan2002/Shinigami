@@ -61,7 +61,7 @@ public class FbHelper {
         for (int i = 0; i <  houseUsers.size(); i++) {
             User currentUser =  houseUsers.get(i);
 
-            int userId = currentUser.getUserId();
+            String userId = currentUser.getUserId();
             String firstName = currentUser.getFirstName();
             String lastName = currentUser.getLastName();
             String dob = currentUser.getDob();
@@ -102,7 +102,7 @@ public class FbHelper {
 
     }
 
-    public void addUserToHouse(int houseId, int userId) {
+    public void addUserToHouse(int houseId, String userId) {
         DocumentReference houseReference = db.collection("Houses").document(houseId+"");
         DocumentReference userReference = db.collection("Users").document(userId+"");
 
