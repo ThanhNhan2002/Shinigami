@@ -80,7 +80,7 @@ public class Fragment5 extends Fragment {
             @Override
             public void onClick(View v) {
 
-                String info = camera.getDeviceName();
+//                String info = camera.getDeviceName();
                 switchToFragment6();
             }
         });
