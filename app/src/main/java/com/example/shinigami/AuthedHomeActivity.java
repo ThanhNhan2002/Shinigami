@@ -43,7 +43,14 @@ public class AuthedHomeActivity extends AppCompatActivity {
             String name = account.getDisplayName();
             String userId = account.getId();
             String email = account.getEmail();
-            nameTextView.setText(name);
+            String firstName = account.getGivenName();
+            String lastName = account.getGivenName();
+            String dob = "No data";
+
+            nameTextView.setText(name + "" + email  +" " + firstName  +" " + lastName +" " + dob) ;
+            User newUser = new User(email, firstName,lastName, dob );
+            MainActivity.userList.add(newUser);
+//            fbHelper.addUserWithId(user);
         }
 
         signOutButton.setOnClickListener(new View.OnClickListener() {

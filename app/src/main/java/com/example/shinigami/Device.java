@@ -5,7 +5,6 @@ import java.util.Map;
 
 public class Device {
     private int deviceId;
-
     private String deviceName;
     private String deviceDesc;
     private boolean isWorking;

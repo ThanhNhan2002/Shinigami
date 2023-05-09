@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
     private CollectionReference userRef = db.collection("Users");
 
     private FbHelper fbHelper;
-    private static ArrayList<User> userList = new ArrayList<User>();
+    public static ArrayList<User> userList = new ArrayList<User>();
     private static ArrayList<House> houseList = new ArrayList<House>();
     private static ArrayList<Device> deviceList = new ArrayList<Device>();
 
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
     GoogleSignInClient googleSignInClient;
 
     public void onUserInfoEntered(String firstName, String lastName, String dateOfBirth) {   //Thanh this function has values already in it from fragment
-        User user4 = new User( 4,firstName, lastName, dateOfBirth);
+        User user4 = new User( "4",firstName, lastName, dateOfBirth);
 
         userList.add(user4);
         fbHelper.addUserWithId(user4);
@@ -96,9 +96,9 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
         //make a FbHelper object
         fbHelper = new FbHelper(db);
 
-        User user1 = new User( 1,"Thanh Nhan", "Nguyen", "11-02-2002");
-        User user2 = new User(2,"Hamas", "Massood", "11-02-2002");
-        User user3 = new User(3,"Page Test 23-Apr Wireless connection", "Perret", "11-02-2002");
+        User user1 = new User( "1","Thanh Nhan", "Nguyen", "11-02-2002");
+        User user2 = new User("2","Hamas", "Massood", "11-02-2002");
+        User user3 = new User("3","Page", "Perret", "11-02-2002");
 //        Example for Hamas
 //        int user1Id = user1.getUserId();
 //        String user1FirstName = user1.getFirstName();
@@ -167,9 +167,9 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
             fbHelper.addDeviceWithId(device);
         }
 
-        fbHelper.addUserToHouse(1,1);
-        fbHelper.addUserToHouse(1,2);
-        fbHelper.addUserToHouse(2,3);
+        fbHelper.addUserToHouse(1,"1");
+        fbHelper.addUserToHouse(1,"2");
+        fbHelper.addUserToHouse(2,"3");
 
         fbHelper.addDeviceToHouse(1, 1);
         fbHelper.addDeviceToHouse(1, 2);
@@ -177,8 +177,6 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
         fbHelper.addDeviceToHouse(1, 4);
 
         // Google Authentication
-
-
         googleButton=findViewById(R.id.googleSigninButton);
         googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -194,9 +192,9 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
     }
 
 
-    public static User getUserById(int Id) {
+    public static User getUserById(String Id) {
         for (User user: userList) {
-            if(user.getUserId() == Id) {
+            if(user.getUserId().equals(Id)) {
                 return user;
             }
         }
@@ -235,6 +233,21 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
 
     private void AuthedHomeActivity() {
         finish();
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        if(account!=null) {
+            String name = account.getDisplayName();
+            String userId = account.getId();
+            String email = account.getEmail();
+            String firstName = account.getGivenName();
+            String lastName = account.getGivenName();
+            String dob = "No data";
+
+            // nameTextView.setText(name + "" + email  +" " + firstName  +" " + lastName +" " + dob) ;
+            User newUser = new User(email, firstName,lastName, dob );
+            MainActivity.userList.add(newUser);
+            fbHelper.addUserWithId(newUser);
+        }
+
         Intent intent = new Intent(getApplicationContext(), AuthedHomeActivity.class);
         startActivity(intent);
     }
