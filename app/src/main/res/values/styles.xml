@@ -6,6 +6,12 @@
         <item name="android:textColor">#ffffff</item>
     </style>
 
+
+    <style name="CustomButton2" parent="Widget.MaterialComponents.Button">
+        <item name="android:background">@drawable/round_background</item>
+        <item name="android:textColor">#ffffff</item>
+    </style>
+
     <style name="Widget.Theme.Shinigami.ButtonBar.Fullscreen" parent="">
         <item name="android:background">@color/black_overlay</item>
         <item name="android:buttonBarStyle">?android:attr/buttonBarStyle</item>

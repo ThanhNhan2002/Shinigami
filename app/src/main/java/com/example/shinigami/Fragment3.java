@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,16 +18,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.Objects;
+import androidx.fragment.app.FragmentTransaction;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link Fragment3#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class Fragment3 extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -38,15 +33,6 @@ public class Fragment3 extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Fragment3.
-     */
-    // TODO: Rename and change types and number of parameters
     public static Fragment3 newInstance(String param1, String param2) {
         Fragment3 fragment = new Fragment3();
         Bundle args = new Bundle();
@@ -108,6 +94,7 @@ public class Fragment3 extends Fragment {
             public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
                 if (keyCode == KeyEvent.KEYCODE_ENTER) {
                     last_name.requestFocus();
+                    last_name.requestFocusFromTouch();
                     return true;
                 }
                 return false;
@@ -136,8 +123,16 @@ public class Fragment3 extends Fragment {
                 // Input data into interface to be sent to main activity where it will be stored in firestore
 
                 if (onUserInfoEnteredListener != null) {
-                    onUserInfoEnteredListener.onUserInfoEntered(firstName, lastName, dateOfBirth);
-                }
+                    onUserInfoEnteredListener.onUserInfoEntered(firstName, lastName, dateOfBirth);}
+
+
+                // Instantiate the new fragment
+                Fragment newFragment = new Fragment4();
+
+                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                transaction.replace(R.id.mainLayout, newFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
 
     });

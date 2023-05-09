@@ -61,6 +61,13 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
         userList.add(user4);
         fbHelper.addUserWithId(user4);
         Log.d("Fragment", firstName);
+
+
+//        // Replace fragment with Fragment4
+//        Fragment4 newFragment = new Fragment4();
+//        getSupportFragmentManager().beginTransaction()
+//                .replace(R.id.user_info, newFragment)
+//                .commit();
     }
 
 
