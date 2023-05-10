@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
+import android.util.Log;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -78,22 +79,35 @@ public class Fragment2 extends Fragment {
         transaction.commit();
     }
 
+    private void switchToFragment4() {
+        // Create a new instance of the Fragment6 class
+        Fragment newFragment = new Fragment4();
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        transaction.replace(R.id.mainLayout, newFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
     GoogleSignInOptions googleSignInOptions;
     GoogleSignInClient googleSignInClient;
     // Google authentication
     private void GoogleSignInHelper() {
+            Log.d("GG", "Inside GG Sign in Helper");
         Intent intent = googleSignInClient.getSignInIntent();
         startActivityForResult(intent, 100);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        Log.d("GG", "Inside onActivityResult");
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode == 100) {
+            Log.d("GG", "Request code is 100");
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try{
                 task.getResult(ApiException.class);
+                Log.d("GG", "Inside the try");
                 AuthedHomeActivity();
             } catch (ApiException e) {
                 Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
@@ -102,24 +116,29 @@ public class Fragment2 extends Fragment {
     }
 
     private void AuthedHomeActivity() {
-        getActivity().finish();
+        Log.d("GG", "Inside the AuthedHomeActivity");
+//        getActivity().finish();
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getActivity());
         if(account!=null) {
+            Log.d("GG", "account is not null");
             String name = account.getDisplayName();
             String userId = account.getId();
             String email = account.getEmail();
             String firstName = account.getGivenName();
-            String lastName = account.getGivenName();
-            String dob = "No data";
+            String lastName = account.getFamilyName();
 
-            // nameTextView.setText(name + "" + email  +" " + firstName  +" " + lastName +" " + dob) ;
+            String dob = "No data";
+//
+//            // nameTextView.setText(name + "" + email  +" " + firstName  +" " + lastName +" " + dob) ;
             User newUser = new User(email, firstName,lastName, dob );
             MainActivity.userList.add(newUser);
-            MainActivity.fbhelper.addUserWithId(newUser);
+            MainActivity.fbHelper.addUserWithId(newUser);
         }
 
-        Intent intent = new Intent(getContext(), AuthedHomeActivity.class);
-        startActivity(intent);}
+        switchToFragment4();
+//        Intent intent = new Intent(getContext(), AuthedHomeActivity.class);
+//        startActivity(intent);
+        }
 
 
     private Button loginButton;
@@ -157,16 +176,16 @@ public class Fragment2 extends Fragment {
             }
         });
 
+
+        googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        googleSignInClient = GoogleSignIn.getClient(getContext(), googleSignInOptions);
         googleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestEmail()
-                        .build();
-
-                googleSignInClient = GoogleSignIn.getClient(getContext(), googleSignInOptions);
-
+                Log.d("GG", "Inside onClick");
                 GoogleSignInHelper();
             }
         });

@@ -47,12 +47,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 
 public class MainActivity extends AppCompatActivity implements Fragment3.OnUserInfoEnteredListener {
-    public static FbHelper fbhelper;
+    public static FbHelper fbHelper;
     private String TAG = "MainActivity";
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference userRef = db.collection("Users");
 
-    private FbHelper fbHelper;
     public static ArrayList<User> userList = new ArrayList<User>();
     private static ArrayList<House> houseList = new ArrayList<House>();
     private static ArrayList<Device> deviceList = new ArrayList<Device>();
