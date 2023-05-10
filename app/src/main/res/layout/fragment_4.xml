@@ -33,7 +33,7 @@
             android:padding="20dp"
             android:text="Enter HouseID"
             android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textColor="#D3C4C4"
             android:textSize="34sp"
             android:textStyle="bold" />
@@ -54,7 +54,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
 
         <android.widget.Button
             android:id="@+id/done_button2"
@@ -62,6 +63,7 @@
             android:layout_width="116dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:layout_marginTop="10dp"
             android:elevation="2dp"
             android:text="Done"

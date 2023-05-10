@@ -39,8 +39,8 @@
 
                 <ImageButton
                     android:id="@+id/button1"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
+                    android:layout_width="23dp"
+                    android:layout_height="9dp"
                     android:layout_rowWeight="1"
                     android:layout_columnWeight="1"
                     android:layout_gravity="fill"

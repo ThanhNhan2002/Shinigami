@@ -5,9 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 
+import android.os.Handler;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.Button;
 
 
@@ -18,6 +22,7 @@ import java.util.Map;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -39,21 +44,23 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 
+
+
 public class MainActivity extends AppCompatActivity implements Fragment3.OnUserInfoEnteredListener {
+    public static FbHelper fbHelper;
     private String TAG = "MainActivity";
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference userRef = db.collection("Users");
 
-    private FbHelper fbHelper;
     public static ArrayList<User> userList = new ArrayList<User>();
     private static ArrayList<House> houseList = new ArrayList<House>();
     private static ArrayList<Device> deviceList = new ArrayList<Device>();
 
-    // Google Authentication
-    ImageView googleButton;
-
-    GoogleSignInOptions googleSignInOptions;
-    GoogleSignInClient googleSignInClient;
+//    // Google Authentication
+//    ImageView googleButton;
+//
+//    GoogleSignInOptions googleSignInOptions;
+//    GoogleSignInClient googleSignInClient;
 
     public void onUserInfoEntered(String firstName, String lastName, String dateOfBirth) {   //Thanh this function has values already in it from fragment
         User user4 = new User( "4",firstName, lastName, dateOfBirth);
@@ -71,27 +78,34 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
     }
 
 
-
-    private Button loginButton;
         @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.hap);
 
-            loginButton = findViewById(R.id.login_button);
+            SoundManager.playIntroSound(this);
+            TextView textView = findViewById(R.id.hap_text);
+            Animation animation = new AlphaAnimation(0.0f, 1.0f); // Change alpha from fully transparent to fully opaque
+            animation.setDuration(1000); // Duration of the animation is 1000 milliseconds (1 second)
+            animation.setRepeatCount(3); // Repeat animation infinitely
+            animation.setRepeatMode(Animation.REVERSE); // Reverse animation at the end so the TextView will fade back out
+            textView.startAnimation(animation);
+            // Delay for 2 seconds (2000 milliseconds)
+            int delayMillis = 5000;
 
-            loginButton.setOnClickListener(new View.OnClickListener() {
+            new Handler().postDelayed(new Runnable() {
                 @Override
-                public void onClick(View v) {
-                    // Instantiate the new fragment
-                    Fragment newFragment = new Fragment3();
+                public void run() {
+                    // Create a new instance of Fragment2
+                    Fragment2 fragment2 = new Fragment2();
 
-                    // Replace the existing fragment in the container with the new one
+                    // Replace the existing layout with Fragment2
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.mainLayout, newFragment)
+                            .replace(R.id.mainLayout, fragment2)
                             .commit();
                 }
-                });
+            }, delayMillis);
+
 
         //make a FbHelper object
         fbHelper = new FbHelper(db);
@@ -177,18 +191,18 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
         fbHelper.addDeviceToHouse(1, 4);
 
         // Google Authentication
-        googleButton=findViewById(R.id.googleSigninButton);
-        googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-
-        googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
-        googleButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                GoogleSignInHelper();
-            }
-        });
+//        googleButton=findViewById(R.id.googleSigninButton);
+//        googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//                .requestEmail()
+//                .build();
+//
+//        googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
+//        googleButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                GoogleSignInHelper();
+//            }
+//        });
     }
 
 
@@ -210,45 +224,45 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
         return null;
     }
 
-    // Google authentication
-    private void GoogleSignInHelper() {
-        Intent intent = googleSignInClient.getSignInIntent();
-        startActivityForResult(intent, 100);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if(requestCode == 100) {
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try{
-                task.getResult(ApiException.class);
-                AuthedHomeActivity();
-            } catch (ApiException e) {
-                Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-    private void AuthedHomeActivity() {
-        finish();
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        if(account!=null) {
-            String name = account.getDisplayName();
-            String userId = account.getId();
-            String email = account.getEmail();
-            String firstName = account.getGivenName();
-            String lastName = account.getGivenName();
-            String dob = "No data";
-
-            // nameTextView.setText(name + "" + email  +" " + firstName  +" " + lastName +" " + dob) ;
-            User newUser = new User(email, firstName,lastName, dob );
-            MainActivity.userList.add(newUser);
-            fbHelper.addUserWithId(newUser);
-        }
-
-        Intent intent = new Intent(getApplicationContext(), AuthedHomeActivity.class);
-        startActivity(intent);
-    }
+//    // Google authentication
+//    private void GoogleSignInHelper() {
+//        Intent intent = googleSignInClient.getSignInIntent();
+//        startActivityForResult(intent, 100);
+//    }
+//
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        if(requestCode == 100) {
+//            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+//            try{
+//                task.getResult(ApiException.class);
+//                AuthedHomeActivity();
+//            } catch (ApiException e) {
+//                Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
+//            }
+//        }
+//    }
+//
+//    private void AuthedHomeActivity() {
+//        finish();
+//        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+//        if(account!=null) {
+//            String name = account.getDisplayName();
+//            String userId = account.getId();
+//            String email = account.getEmail();
+//            String firstName = account.getGivenName();
+//            String lastName = account.getGivenName();
+//            String dob = "No data";
+//
+//            // nameTextView.setText(name + "" + email  +" " + firstName  +" " + lastName +" " + dob) ;
+//            User newUser = new User(email, firstName,lastName, dob );
+//            MainActivity.userList.add(newUser);
+//            fbHelper.addUserWithId(newUser);
+//        }
+//
+//        Intent intent = new Intent(getApplicationContext(), AuthedHomeActivity.class);
+//        startActivity(intent);
+//    }
 }
