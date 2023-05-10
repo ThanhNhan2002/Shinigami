@@ -96,6 +96,7 @@ public class Fragment7 extends DialogFragment {
             @Override
             public void onClick(View v) {
                 // TODO: Add logic for saving data to database or performing other actions
+                SoundManager.playButtonSound(getContext());
                 dismiss();
             }
         });
