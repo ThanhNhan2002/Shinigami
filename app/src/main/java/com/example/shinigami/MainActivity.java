@@ -189,7 +189,23 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
                 GoogleSignInHelper();
             }
         });
-    }
+
+        MyFirebaseMessagingServices.getInstance().subscribeToTopic("News")
+                .addOnCompleteListener(new OnCompleteListener<Void>()
+                {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task)
+                    {
+                        String msg = "Done";
+                        if (!task.isSuccessful())
+                        {
+                            msg = "Failed";
+                        }
+                    }
+                });
+
+
+        }
 
 
     public static User getUserById(String Id) {
