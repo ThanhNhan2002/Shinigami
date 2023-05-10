@@ -79,8 +79,13 @@ public class Fragment4 extends Fragment {
         done_button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                SoundManager.playButtonSound(getContext());
+
                 // Get the entered house ID
                 String houseId = houseid_input.getText().toString();
+
+                getActivity().setTitle(houseId);
 
                 // Create a new instance of the Fragment5 class
                 Fragment5 newFragment = new Fragment5();

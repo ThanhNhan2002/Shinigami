@@ -1,6 +1,7 @@
 package com.example.shinigami;
 
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -11,6 +12,8 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -78,6 +81,7 @@ public class Fragment3 extends Fragment {
     }
 
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -88,6 +92,10 @@ public class Fragment3 extends Fragment {
         last_name = rootView.findViewById(R.id.text_lastname);
         dob = rootView.findViewById(R.id.dob);
         header = rootView.findViewById(R.id.textView);
+
+        Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.animate);
+        header.startAnimation(animation);
+
 
         first_name.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -116,6 +124,9 @@ public class Fragment3 extends Fragment {
         done_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                SoundManager.playButtonSound(getContext()); //sound effect
+
                 String firstName = first_name.getText().toString();
                 String lastName = last_name.getText().toString();
                 String dateOfBirth = dob.getText().toString();

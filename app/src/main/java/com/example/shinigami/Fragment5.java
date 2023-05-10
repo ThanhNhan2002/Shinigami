@@ -1,5 +1,8 @@
 package com.example.shinigami;
 
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -50,6 +53,8 @@ public class Fragment5 extends Fragment {
         transaction.commit();
     }
 
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +73,7 @@ public class Fragment5 extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        View rootView = inflater.inflate(R.layout.fragment_5, container, false);
+        View rootView = inflater.inflate(R.layout.page_two, container, false);
         ImageButton button1 = rootView.findViewById(R.id.button1);
         ImageButton button2 = rootView.findViewById(R.id.button2);
         ImageButton button3 = rootView.findViewById(R.id.button3);
@@ -80,14 +85,15 @@ public class Fragment5 extends Fragment {
             @Override
             public void onClick(View v) {
 
-//                String info = camera.getDeviceName();
-                switchToFragment6();
+                SoundManager.playButtonSound(getContext());
+                 switchToFragment6();
             }
         });
 
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SoundManager.playButtonSound(getContext());
                 switchToFragment6();
             }
         });
@@ -95,6 +101,7 @@ public class Fragment5 extends Fragment {
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SoundManager.playButtonSound(getContext());
                 switchToFragment6();
             }
         });
@@ -102,7 +109,19 @@ public class Fragment5 extends Fragment {
         button4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SoundManager.playButtonSound(getContext());
                 switchToFragment6();
+            }
+
+        });
+
+
+        button5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SoundManager.playButtonSound(getContext());
+                Fragment7 popupFragment = Fragment7.newInstance();
+                popupFragment.show(getChildFragmentManager(), "PopupFragment");
             }
 
         });
