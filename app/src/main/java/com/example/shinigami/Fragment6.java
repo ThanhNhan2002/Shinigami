@@ -39,6 +39,9 @@ public class Fragment6 extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private int fragmentDeviceId;
+
+
     public Fragment6() {
         // Required empty public constructor
     }
@@ -121,20 +124,26 @@ public class Fragment6 extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
             {
                 Log.d("Switch", "Status: adsfasdf ");
-
                     Log.d("Switch", "Status: " + isWorkingSwitch.isChecked());
                     if (isWorkingSwitch.isChecked()) {
                         Log.d("Switch", "Status: " + isWorkingSwitch.isChecked());
-//                        isWorkingSwitch.setChecked(false);
                         Log.d("Switch", "Toggled on");
-                        Log.d("Switch", "Status: " + isWorkingSwitch.isChecked());
+                        MainActivity.fbHelper.db
+                                .collection("Houses")
+                                .document(1+"")
+                                .collection("houseDevices")
+                                .document(fragmentDeviceId+"")
+                                .update("isWorking", isWorkingSwitch.isChecked());
                     } else {
                         Log.d("Switch", "Status: " + isWorkingSwitch.isChecked());
-//                        isWorkingSwitch.setChecked(true);
                         Log.d("Switch", "Toggled Off");
-                        Log.d("Switch", "Status: " + isWorkingSwitch.isChecked());
+                        MainActivity.fbHelper.db
+                                .collection("Houses")
+                                .document(1+"")
+                                .collection("houseDevices")
+                                .document(fragmentDeviceId+"")
+                                .update("isWorking", isWorkingSwitch.isChecked());
                     }
-
             }
         });
 
@@ -160,8 +169,7 @@ public class Fragment6 extends Fragment {
                                         String deviceName = Objects.requireNonNull(document.get("deviceName")).toString();
                                         String deviceDesc = Objects.requireNonNull(document.get("deviceDesc")).toString();
                                         String isWorking = Objects.requireNonNull(document.get("isWorking")).toString();
-
-
+                                        fragmentDeviceId = Integer.parseInt(deviceId);
 
                                         Map<String, String> deviceStatuses = (Map) document.get("deviceStatuses");
                                         for (Map.Entry<String, String> entry : deviceStatuses.entrySet()) {
@@ -175,8 +183,6 @@ public class Fragment6 extends Fragment {
                                         isWorkingSwitch.setChecked(Boolean.parseBoolean(isWorking));
                                         Log.d("Switch", "Staus after reading database" + isWorkingSwitch.isChecked());
                                         dataFetched = true;
-
-
                                     } else {
                                         Log.d("DeviceFragment", "No such document");
                                     }
