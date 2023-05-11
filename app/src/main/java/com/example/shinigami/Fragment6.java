@@ -2,11 +2,14 @@ package com.example.shinigami;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentResultListener;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -61,6 +64,18 @@ public class Fragment6 extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_6, container, false);
 
+        getParentFragmentManager().setFragmentResultListener("dataFromHomePage", this, new FragmentResultListener() {
+            @Override
+            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
+                int deviceId = result.getInt("deviceId");
+                TextView textView1 = rootView.findViewById(R.id.textView1);
+                textView1.setText("deviceId: " + deviceId);
+
+                String deviceName = result.getString("deviceName");
+                TextView textView2 = rootView.findViewById(R.id.textView2);
+                textView2.setText("deviceName: " + deviceName);
+            }
+        });
         return rootView;
     }
 }

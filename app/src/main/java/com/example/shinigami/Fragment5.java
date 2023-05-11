@@ -16,6 +16,8 @@ import android.widget.ImageButton;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link Fragment5#newInstance} factory method to
@@ -47,12 +49,54 @@ public class Fragment5 extends Fragment {
     private void switchToFragment6() {
         // Create a new instance of the Fragment6 class
         Fragment newFragment = new Fragment6();
+
+//        private int deviceId;
+//        private String deviceName;
+//        private String deviceDesc;
+//        private boolean isWorking;
+//        private HashMap<String, String> deviceStatuses = new HashMap<>();
+
+        Bundle result = new Bundle();
+//        result.putString("df1", "test data from home fragment6");
+//
+//        result.putString("deviceId", true);
+//        result.putString("deviceName", true);
+//        result.putString("deviceDesc", true);
+//        result.putBoolean("isWorking", true);
+
+//        getParentFragmentManager().setFragmentResult("dataFrom1", result);
+
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
         transaction.replace(R.id.mainLayout, newFragment);
         transaction.addToBackStack(null);
         transaction.commit();
     }
 
+
+    private void switchToFragment6(Device device) {
+        // Create a new instance of the Fragment6 class
+        Fragment newFragment = new Fragment6();
+
+//        private int deviceId;
+//        private String deviceName;
+//        private String deviceDesc;
+//        private boolean isWorking;
+//        private HashMap<String, String> deviceStatuses = new HashMap<>();
+
+        Bundle result = new Bundle();
+
+        result.putInt("deviceId", device.getDeviceId());
+        result.putString("deviceName", device.getDeviceName());
+        result.putString("deviceDesc", device.getDeviceDesc());
+        result.putBoolean("isWorking", true);
+
+        getParentFragmentManager().setFragmentResult("dataFromHomePage", result);
+
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        transaction.replace(R.id.mainLayout, newFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
 
 
     @Override
@@ -86,7 +130,8 @@ public class Fragment5 extends Fragment {
             public void onClick(View v) {
 
                 SoundManager.playButtonSound(getContext());
-                 switchToFragment6();
+                Device device = MainActivity.getDeviceById(1);
+                switchToFragment6(device);
             }
         });
 
@@ -94,7 +139,9 @@ public class Fragment5 extends Fragment {
             @Override
             public void onClick(View v) {
                 SoundManager.playButtonSound(getContext());
-                switchToFragment6();
+                Device device = MainActivity.getDeviceById(2);
+                switchToFragment6(device);
+//                switchToFragment6();
             }
         });
 
@@ -102,7 +149,9 @@ public class Fragment5 extends Fragment {
             @Override
             public void onClick(View v) {
                 SoundManager.playButtonSound(getContext());
-                switchToFragment6();
+                Device device = MainActivity.getDeviceById(3);
+                switchToFragment6(device);
+//                switchToFragment6();
             }
         });
 
@@ -110,7 +159,9 @@ public class Fragment5 extends Fragment {
             @Override
             public void onClick(View v) {
                 SoundManager.playButtonSound(getContext());
-                switchToFragment6();
+                Device device = MainActivity.getDeviceById(4);
+                switchToFragment6(device);
+//                switchToFragment6();
             }
 
         });

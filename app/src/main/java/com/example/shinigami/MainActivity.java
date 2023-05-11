@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
 
         userList.add(user4);
         fbHelper.addUserWithId(user4);
+        fbHelper.addUserToHouse(1, "4");
         Log.d("Fragment", firstName);
 
 
@@ -189,6 +190,8 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
         fbHelper.addDeviceToHouse(1, 2);
         fbHelper.addDeviceToHouse(1, 3);
         fbHelper.addDeviceToHouse(1, 4);
+
+        fbHelper.getDeviceInHouse(1, 1);
 
         // Google Authentication
 //        googleButton=findViewById(R.id.googleSigninButton);

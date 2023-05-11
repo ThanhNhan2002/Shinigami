@@ -14,7 +14,8 @@ class StartupPage extends AppCompatActivity {
         setContentView(R.layout.hap);
 
         // Delay for 10 seconds (10000 milliseconds)
-        int delayMillis = 2000;
+//        int delayMillis = 2000;
+        int delayMillis = 1;
 
         new Handler().postDelayed(new Runnable() {
             @Override
