@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class FbHelper {
-    private FirebaseFirestore db;
+    public FirebaseFirestore db;
     private String TAG = "FbHelper";
 
     public FbHelper(FirebaseFirestore db) {
@@ -175,40 +175,7 @@ public class FbHelper {
                 .set(deviceInfo);
     }
 
-    public void getDeviceInHouse(int deviceId,  int houseId) {
-        db.collection("Houses")
-                .document(houseId+"")
-                .collection("houseDevices")
-                .document(deviceId+"")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
-                                Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                                String deviceId = Objects.requireNonNull(document.get("deviceId")).toString();
-                                String deviceName = Objects.requireNonNull(document.get("deviceName")).toString();
-                                String deviceDesc = Objects.requireNonNull(document.get("deviceDesc")).toString();
-                                String isWorking = Objects.requireNonNull(document.get("isWorking")).toString();
 
-                                Log.d("GetDataFromFB", "deviceId: " + deviceId);
-                                Log.d("GetDataFromFB", "deviceName: " + deviceName);
-                                Log.d("GetDataFromFB", "deviceDesc: " + deviceDesc);
-                                Log.d("GetDataFromFB", "isWorking: " + isWorking);
-
-
-                            } else {
-                                Log.d(TAG, "No such document");
-                            }
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
-
-    }
 
 
     // could-be-use-in-the-future functions
@@ -344,5 +311,40 @@ public class FbHelper {
                         }
                     }
                 });
+    }
+
+    public void getDeviceInHouse(int deviceId,  int houseId) {
+        db.collection("Houses")
+                .document(houseId+"")
+                .collection("houseDevices")
+                .document(deviceId+"")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                                String deviceId = Objects.requireNonNull(document.get("deviceId")).toString();
+                                String deviceName = Objects.requireNonNull(document.get("deviceName")).toString();
+                                String deviceDesc = Objects.requireNonNull(document.get("deviceDesc")).toString();
+                                String isWorking = Objects.requireNonNull(document.get("isWorking")).toString();
+
+                                Log.d("GetDataFromFB", "deviceId: " + deviceId);
+                                Log.d("GetDataFromFB", "deviceName: " + deviceName);
+                                Log.d("GetDataFromFB", "deviceDesc: " + deviceDesc);
+                                Log.d("GetDataFromFB", "isWorking: " + isWorking);
+                                Device returnedDevice = new Device(Integer.parseInt(isWorking), deviceName, deviceDesc, Boolean.parseBoolean(isWorking) );
+//                                return returnedDevice;
+                            } else {
+                                Log.d(TAG, "No such document");
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
     }
 }

@@ -191,7 +191,9 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
         fbHelper.addDeviceToHouse(1, 3);
         fbHelper.addDeviceToHouse(1, 4);
 
-        fbHelper.getDeviceInHouse(1, 1);
+//        Device returnedDevice = fbHelper.getDeviceInHouse(1, 1);
+//        Log.d("ReturnedDevice", returnedDevice.getDeviceId()+"");
+//        Log.d("ReturnedDevice", returnedDevice.getDeviceName()+"");
 
         // Google Authentication
 //        googleButton=findViewById(R.id.googleSigninButton);
