@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -84,6 +86,12 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
         super.onCreate(savedInstanceState);
         setContentView(R.layout.hap);
 
+        fbHelper = new FbHelper(db);
+        populateDatabase();
+
+
+
+
             SoundManager.playIntroSound(this);
             TextView textView = findViewById(R.id.hap_text);
             Animation animation = new AlphaAnimation(0.0f, 1.0f); // Change alpha from fully transparent to fully opaque
@@ -109,9 +117,7 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
 
 
         //make a FbHelper object
-        fbHelper = new FbHelper(db);
 
-        populateDatabase();
 
 //        Example for Hamas
 //        int user1Id = user1.getUserId();
