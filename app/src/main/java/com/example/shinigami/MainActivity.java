@@ -111,15 +111,59 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
         //make a FbHelper object
         fbHelper = new FbHelper(db);
 
-        User user1 = new User( "1","Thanh Nhan", "Nguyen", "11-02-2002");
-        User user2 = new User("2","Hamas", "Massood", "11-02-2002");
-        User user3 = new User("3","Page", "Perret", "11-02-2002");
+        populateDatabase();
+
 //        Example for Hamas
 //        int user1Id = user1.getUserId();
 //        String user1FirstName = user1.getFirstName();
 //        String user1LastName = user1.getFirstName();
 //        String user1Dob = user1.getDob();
 
+
+
+
+//        Device returnedDevice = fbHelper.getDeviceInHouse(1, 1);
+//        Log.d("ReturnedDevice", returnedDevice.getDeviceId()+"");
+//        Log.d("ReturnedDevice", returnedDevice.getDeviceName()+"");
+
+        // Google Authentication
+//        googleButton=findViewById(R.id.googleSigninButton);
+//        googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//                .requestEmail()
+//                .build();
+//
+//        googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
+//        googleButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                GoogleSignInHelper();
+//            }
+//        });
+    }
+
+
+    public static User getUserById(String Id) {
+        for (User user: userList) {
+            if(user.getUserId().equals(Id)) {
+                return user;
+            }
+        }
+        return null;
+    }
+
+    public static Device getDeviceById(int Id) {
+        for (Device device: deviceList) {
+            if(device.getDeviceId() == Id) {
+                return device;
+            }
+        }
+        return null;
+    }
+
+    private void populateDatabase() {
+        User user1 = new User( "1","Thanh Nhan", "Nguyen", "11-02-2002");
+        User user2 = new User("2","Hamas", "Massood", "11-02-2002");
+        User user3 = new User("3","Page", "Perret", "11-02-2002");
 
         userList.add(user1);
         userList.add(user2);
@@ -190,43 +234,6 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
         fbHelper.addDeviceToHouse(1, 2);
         fbHelper.addDeviceToHouse(1, 3);
         fbHelper.addDeviceToHouse(1, 4);
-
-//        Device returnedDevice = fbHelper.getDeviceInHouse(1, 1);
-//        Log.d("ReturnedDevice", returnedDevice.getDeviceId()+"");
-//        Log.d("ReturnedDevice", returnedDevice.getDeviceName()+"");
-
-        // Google Authentication
-//        googleButton=findViewById(R.id.googleSigninButton);
-//        googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//                .requestEmail()
-//                .build();
-//
-//        googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
-//        googleButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                GoogleSignInHelper();
-//            }
-//        });
-    }
-
-
-    public static User getUserById(String Id) {
-        for (User user: userList) {
-            if(user.getUserId().equals(Id)) {
-                return user;
-            }
-        }
-        return null;
-    }
-
-    public static Device getDeviceById(int Id) {
-        for (Device device: deviceList) {
-            if(device.getDeviceId() == Id) {
-                return device;
-            }
-        }
-        return null;
     }
 
 //    // Google authentication
