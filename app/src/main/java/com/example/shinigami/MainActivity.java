@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
     public void onUserInfoEntered(String firstName, String lastName, String dateOfBirth) {   //Thanh this function has values already in it from fragment
         User user4 = new User( "4",firstName, lastName, dateOfBirth);
 
-        userList.add(user4);
+//        userList.add(user4);
         fbHelper.addUserWithId(user4);
         fbHelper.addUserToHouse(1, "4");
         Log.d("Fragment", firstName);
@@ -87,7 +87,26 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
         setContentView(R.layout.hap);
 
         fbHelper = new FbHelper(db);
-        populateDatabase();
+        fbHelper.addUserToHouse(1,"1");
+
+        Device camera = new Device(1, "Camera", "Living Room Camera");
+        camera.addStatus("isOn", "yes");
+        camera.addStatus("motionDetected", "no");
+
+//            // TV device
+//            Device tv = new Device(2, "TV", "Bedroom TV");
+//            tv.addStatus("isOn", "yes");
+//            tv.addStatus("volume", "50");
+
+
+
+            fbHelper.addDeviceWithId(camera);
+//            fbHelper.addDeviceWithId(tv);
+        fbHelper.addDeviceToHouse(1, 1);
+//            fbHelper.addDeviceToHouse(1, 2);
+
+        Log.d("Refactor", "addUserToHouse");
+//        populateDatabase();
 
 
 
@@ -147,24 +166,25 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
 //        });
     }
 
+// todo: remove after refactoring
+//    public static User getUserById(String Id) {
+//        for (User user: userList) {
+//            if(user.getUserId().equals(Id)) {
+//                return user;
+//            }
+//        }
+//        return null;
+//    }
 
-    public static User getUserById(String Id) {
-        for (User user: userList) {
-            if(user.getUserId().equals(Id)) {
-                return user;
-            }
-        }
-        return null;
-    }
-
-    public static Device getDeviceById(int Id) {
-        for (Device device: deviceList) {
-            if(device.getDeviceId() == Id) {
-                return device;
-            }
-        }
-        return null;
-    }
+    // todo: remove after refactoring
+//    public static Device getDeviceById(int Id) {
+//        for (Device device: deviceList) {
+//            if(device.getDeviceId() == Id) {
+//                return device;
+//            }
+//        }
+//        return null;
+//    }
 
     private void populateDatabase() {
         User user1 = new User( "1","Thanh Nhan", "Nguyen", "11-02-2002");

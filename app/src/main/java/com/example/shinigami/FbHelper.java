@@ -149,8 +149,10 @@ public class FbHelper {
                             if (houseExist && userExist) {
                                 Log.d(TAG, "Both exist");
                                 // Main logic execution
-                                User retrievedUser = MainActivity.getUserById(userId);
-                                houseReference.collection("houseUsers").document(userId+"").set(retrievedUser);
+                                // todo: remove after refactoring
+//                                User retrievedUser = MainActivity.getUserById(userId);
+
+                                houseReference.collection("houseUsers").document(userId+"").set(userDocument.getData());
 
                             } else {
                                 Log.d(TAG, "Both do not exist");
@@ -168,6 +170,7 @@ public class FbHelper {
         deviceInfo.put("deviceName ", device.getDeviceName());
         deviceInfo.put("deviceDesc", device.getDeviceDesc());
         deviceInfo.put("isWorking", device.getIsWorking());
+        deviceInfo.put("deviceStatuses", device.getDeviceStatuses());
 
         // Add a new device with Firebase Id as the Id
         db.collection("Devices")
@@ -175,6 +178,67 @@ public class FbHelper {
                 .set(deviceInfo);
     }
 
+    public void addDeviceToHouse(int houseId, int deviceId) {
+        Log.d(TAG, "addDeviceToHouse");
+
+        DocumentReference houseReference = db.collection("Houses").document(houseId+"");
+        DocumentReference deviceReference = db.collection("Devices").document(deviceId+"");
+
+        // Create a list to hold the tasks
+        List<Task<DocumentSnapshot>> tasks = new ArrayList<>();
+
+        // Add house and user tasks to the list
+        tasks.add(houseReference.get());
+        tasks.add(deviceReference.get());
+
+        // Wait for all tasks to complete successfully
+        Tasks.whenAllSuccess(tasks)
+                .addOnCompleteListener(new OnCompleteListener<List<Object>>() {
+                    @Override
+                    public void onComplete(@NonNull Task<List<Object>> task) {
+                        if (task.isSuccessful()) {
+                            boolean houseExist = false;
+                            boolean deviceExist = false;
+
+                            // Get the results of the tasks
+                            List<Object> results = task.getResult();
+                            DocumentSnapshot houseDocument = (DocumentSnapshot) results.get(0);
+                            DocumentSnapshot deviceDocument = (DocumentSnapshot) results.get(1);
+
+                            // Check if house document exists
+                            if (houseDocument.exists()) {
+                                Log.d(TAG, "House with id "+ houseId +" exists: "+ houseDocument);
+                                houseExist = true;
+                            } else {
+                                Log.d(TAG, "House with id "+ houseId +" does not exist: "+ houseDocument);
+                            }
+
+                            // Check if device document exists
+                            if (deviceDocument.exists()) {
+                                Log.d(TAG, "Device with id "+ deviceId +" exists: "+ deviceDocument);
+                                deviceExist = true;
+                            } else {
+                                Log.d(TAG, "Device with id "+ deviceId +" does not exist: "+ deviceDocument);
+                            }
+
+                            // Check if both house and user exist and execute logic
+                            if (houseExist && deviceExist) {
+                                Log.d(TAG, "Both house and device exist");
+                                // Main logic execution
+//                                Device retrievedDevice = MainActivity.getDeviceById(deviceId);
+
+//                                houseReference.collection("houseDevices").document(deviceId+"").set(retrievedDevice);
+                                houseReference.collection("houseDevices").document(deviceId+"").set(deviceDocument.getData());
+
+                            } else {
+                                Log.d(TAG, "Both house and device do not exist");
+                            }
+                        } else {
+                            Log.d(TAG, "Failed with: ", task.getException());
+                        }
+                    }
+                });
+    }
 
 
 
@@ -254,64 +318,7 @@ public class FbHelper {
 //        db.collection("Houses").document("HouseUsers").add(house);
     }
 
-    public void addDeviceToHouse(int houseId, int deviceId) {
-        Log.d(TAG, "addDeviceToHouse");
 
-        DocumentReference houseReference = db.collection("Houses").document(houseId+"");
-        DocumentReference deviceReference = db.collection("Devices").document(deviceId+"");
-
-        // Create a list to hold the tasks
-        List<Task<DocumentSnapshot>> tasks = new ArrayList<>();
-
-        // Add house and user tasks to the list
-        tasks.add(houseReference.get());
-        tasks.add(deviceReference.get());
-
-        // Wait for all tasks to complete successfully
-        Tasks.whenAllSuccess(tasks)
-                .addOnCompleteListener(new OnCompleteListener<List<Object>>() {
-                    @Override
-                    public void onComplete(@NonNull Task<List<Object>> task) {
-                        if (task.isSuccessful()) {
-                            boolean houseExist = false;
-                            boolean deviceExist = false;
-
-                            // Get the results of the tasks
-                            List<Object> results = task.getResult();
-                            DocumentSnapshot houseDocument = (DocumentSnapshot) results.get(0);
-                            DocumentSnapshot deviceDocument = (DocumentSnapshot) results.get(1);
-
-                            // Check if house document exists
-                            if (houseDocument.exists()) {
-                                Log.d(TAG, "House with id "+ houseId +" exists: "+ houseDocument);
-                                houseExist = true;
-                            } else {
-                                Log.d(TAG, "House with id "+ houseId +" does not exist: "+ houseDocument);
-                            }
-
-                            // Check if device document exists
-                            if (deviceDocument.exists()) {
-                                Log.d(TAG, "Device with id "+ deviceId +" exists: "+ deviceDocument);
-                                deviceExist = true;
-                            } else {
-                                Log.d(TAG, "Device with id "+ deviceId +" does not exist: "+ deviceDocument);
-                            }
-
-                            // Check if both house and user exist and execute logic
-                            if (houseExist && deviceExist) {
-                                Log.d(TAG, "Both house and device exist");
-                                // Main logic execution
-                                Device retrievedDevice = MainActivity.getDeviceById(deviceId);
-                                houseReference.collection("houseDevices").document(deviceId+"").set(retrievedDevice);
-                            } else {
-                                Log.d(TAG, "Both house and device do not exist");
-                            }
-                        } else {
-                            Log.d(TAG, "Failed with: ", task.getException());
-                        }
-                    }
-                });
-    }
 
     public void getDeviceInHouse(int deviceId,  int houseId) {
         db.collection("Houses")

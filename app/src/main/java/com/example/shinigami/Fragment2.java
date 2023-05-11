@@ -131,7 +131,7 @@ public class Fragment2 extends Fragment {
 //
 //            // nameTextView.setText(name + "" + email  +" " + firstName  +" " + lastName +" " + dob) ;
             User newUser = new User(email, firstName,lastName, dob );
-            MainActivity.userList.add(newUser);
+//            MainActivity.userList.add(newUser);
             MainActivity.fbHelper.addUserWithId(newUser);
         }
 

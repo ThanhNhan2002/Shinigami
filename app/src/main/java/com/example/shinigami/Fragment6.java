@@ -160,13 +160,16 @@ public class Fragment6 extends Fragment {
                         .document(deviceId+"")
                         .get()
                         .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                 if (task.isSuccessful()) {
                                     DocumentSnapshot document = task.getResult();
                                     if (document.exists()) {
+                                        Log.d("Refactor", "deviceName" + document.get("deviceName").toString());
                                         String deviceId = Objects.requireNonNull(document.get("deviceId")).toString();
                                         String deviceName = Objects.requireNonNull(document.get("deviceName")).toString();
+
                                         String deviceDesc = Objects.requireNonNull(document.get("deviceDesc")).toString();
                                         String isWorking = Objects.requireNonNull(document.get("isWorking")).toString();
                                         fragmentDeviceId = Integer.parseInt(deviceId);

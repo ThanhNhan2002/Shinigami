@@ -73,7 +73,7 @@ public class Fragment5 extends Fragment {
     }
 
 
-    private void switchToFragment6(Device device) {
+    private void switchToFragment6(int deviceId) {
         // Create a new instance of the Fragment6 class
         Fragment newFragment = new Fragment6();
 
@@ -85,10 +85,11 @@ public class Fragment5 extends Fragment {
 
         Bundle result = new Bundle();
 
-        result.putInt("deviceId", device.getDeviceId());
-        result.putString("deviceName", device.getDeviceName());
-        result.putString("deviceDesc", device.getDeviceDesc());
-        result.putBoolean("isWorking", true);
+        result.putInt("deviceId", deviceId);
+//        todo: delete after refactoring
+//        result.putString("deviceName", device.getDeviceName());
+//        result.putString("deviceDesc", device.getDeviceDesc());
+//        result.putBoolean("isWorking", true);
 
         getParentFragmentManager().setFragmentResult("dataFromHomePage", result);
 
@@ -130,8 +131,8 @@ public class Fragment5 extends Fragment {
             public void onClick(View v) {
 
                 SoundManager.playButtonSound(getContext());
-                Device device = MainActivity.getDeviceById(1);
-                switchToFragment6(device);
+//                Device device = MainActivity.getDeviceById(1);
+                switchToFragment6(1);
             }
         });
 
@@ -139,8 +140,8 @@ public class Fragment5 extends Fragment {
             @Override
             public void onClick(View v) {
                 SoundManager.playButtonSound(getContext());
-                Device device = MainActivity.getDeviceById(2);
-                switchToFragment6(device);
+//                Device device = MainActivity.getDeviceById(2);
+                switchToFragment6(2);
 //                switchToFragment6();
             }
         });
@@ -149,8 +150,8 @@ public class Fragment5 extends Fragment {
             @Override
             public void onClick(View v) {
                 SoundManager.playButtonSound(getContext());
-                Device device = MainActivity.getDeviceById(3);
-                switchToFragment6(device);
+//                Device device = MainActivity.getDeviceById(3);
+                switchToFragment6(3);
 //                switchToFragment6();
             }
         });
@@ -159,8 +160,8 @@ public class Fragment5 extends Fragment {
             @Override
             public void onClick(View v) {
                 SoundManager.playButtonSound(getContext());
-                Device device = MainActivity.getDeviceById(4);
-                switchToFragment6(device);
+//                Device device = MainActivity.getDeviceById(4);
+                switchToFragment6(4);
 //                switchToFragment6();
             }
 
