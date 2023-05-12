@@ -1,5 +1,6 @@
 package com.example.shinigami;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -163,29 +165,37 @@ public class Fragment6 extends Fragment {
 
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
                                 if (task.isSuccessful()) {
                                     DocumentSnapshot document = task.getResult();
                                     if (document.exists()) {
-                                        Log.d("Refactor", "deviceName" + document.get("deviceName").toString());
-                                        String deviceId = Objects.requireNonNull(document.get("deviceId")).toString();
-                                        String deviceName = Objects.requireNonNull(document.get("deviceName")).toString();
+//                                        Log.d("Refactor", "deviceName" + Objects.requireNonNull(document.get("deviceName")).toString());
+                                        try {
+                                            String deviceId = document.get("deviceId") == null ? "null" : document.get("deviceId").toString();
+                                            String deviceName = document.get("deviceName") == null ? "null" : document.get("deviceName").toString();
 
-                                        String deviceDesc = Objects.requireNonNull(document.get("deviceDesc")).toString();
-                                        String isWorking = Objects.requireNonNull(document.get("isWorking")).toString();
-                                        fragmentDeviceId = Integer.parseInt(deviceId);
+                                            String deviceDesc =  document.get("deviceDesc") == null ? "null" : document.get("deviceDesc").toString();
+                                            String isWorking = document.get("isWorking") == null ? "null" : document.get("isWorking").toString();
+                                            fragmentDeviceId = Integer.parseInt(deviceId);
 
-                                        Map<String, String> deviceStatuses = (Map) document.get("deviceStatuses");
-                                        for (Map.Entry<String, String> entry : deviceStatuses.entrySet()) {
-                                            Log.d( "getMap", entry.getKey() + ": " + entry.getValue());
+                                            Map<String, String> deviceStatuses = (Map) document.get("deviceStatuses");
+                                            for (Map.Entry<String, String> entry : deviceStatuses.entrySet()) {
+                                                Log.d("getMap", entry.getKey() + ": " + entry.getValue());
+                                            }
+
+                                            deviceIdTextView.setText("deviceId: " + deviceId);
+                                            deviceNameTextView.setText("deviceName: " + deviceName);
+                                            deviceDescTextView.setText("deviceDesc: " + deviceDesc);
+                                            isWorkingTextView.setText("isWorking: " + isWorking);
+                                            isWorkingSwitch.setChecked(Boolean.parseBoolean(isWorking));
+                                            Log.d("Switch", "Staus after reading database" + isWorkingSwitch.isChecked());
+                                            dataFetched = true;
+                                        } catch (Exception e) {
+                                            Toast toast = Toast.makeText(getActivity(), "Error: Some of the field is null, cannot fetch data" , Toast.LENGTH_SHORT);
+                                            toast.show();
                                         }
 
-                                        deviceIdTextView.setText("deviceId: " + deviceId);
-                                        deviceNameTextView.setText("deviceName: " + deviceName);
-                                        deviceDescTextView.setText("deviceDesc: " + deviceDesc);
-                                        isWorkingTextView.setText("isWorking: " + isWorking);
-                                        isWorkingSwitch.setChecked(Boolean.parseBoolean(isWorking));
-                                        Log.d("Switch", "Staus after reading database" + isWorkingSwitch.isChecked());
-                                        dataFetched = true;
+
                                     } else {
                                         Log.d("DeviceFragment", "No such document");
                                     }

@@ -167,7 +167,7 @@ public class FbHelper {
     public void addDeviceWithId(Device device) {
         Map<String, Object> deviceInfo = new HashMap<>();
         deviceInfo.put("deviceId", device.getDeviceId());
-        deviceInfo.put("deviceName ", device.getDeviceName());
+        deviceInfo.put("deviceName", device.getDeviceName());
         deviceInfo.put("deviceDesc", device.getDeviceDesc());
         deviceInfo.put("isWorking", device.getIsWorking());
         deviceInfo.put("deviceStatuses", device.getDeviceStatuses());
