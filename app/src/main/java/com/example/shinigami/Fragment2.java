@@ -128,16 +128,11 @@ public class Fragment2 extends Fragment {
             String lastName = account.getFamilyName();
 
             String dob = "No data";
-//
-//            // nameTextView.setText(name + "" + email  +" " + firstName  +" " + lastName +" " + dob) ;
             User newUser = new User(email, firstName,lastName, dob );
-            MainActivity.userList.add(newUser);
             MainActivity.fbHelper.addUserWithId(newUser);
         }
 
         switchToFragment4();
-//        Intent intent = new Intent(getContext(), AuthedHomeActivity.class);
-//        startActivity(intent);
         }
 
 

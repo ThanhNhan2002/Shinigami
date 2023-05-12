@@ -96,6 +96,19 @@ public class Fragment7 extends DialogFragment {
             @Override
             public void onClick(View v) {
                 // TODO: Add logic for saving data to database or performing other actions
+                String deviceName = mDeviceNameEditText.getText().toString();
+                String deviceDesc = mDeviceNameEditText.getText().toString();
+                boolean isWorking = mStatusSwitch.isChecked();
+                Log.d("addDevice", "deviceName: "  + deviceName);
+                Log.d("addDevice", "deviceDesc: "  + deviceDesc);
+                Log.d("addDevice", "isWorking: "  + isWorking);
+
+                Device newDevice = new Device(5, deviceName, deviceDesc,  isWorking);
+                MainActivity.fbHelper.db
+                        .collection("Houses")
+                        .document(1+"")
+                        .collection("houseDevices")
+                        .add(newDevice);
                 SoundManager.playButtonSound(getContext());
                 dismiss();
             }

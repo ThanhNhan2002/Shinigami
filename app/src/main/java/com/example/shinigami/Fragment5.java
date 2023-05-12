@@ -16,6 +16,8 @@ import android.widget.ImageButton;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link Fragment5#newInstance} factory method to
@@ -47,12 +49,31 @@ public class Fragment5 extends Fragment {
     private void switchToFragment6() {
         // Create a new instance of the Fragment6 class
         Fragment newFragment = new Fragment6();
+
+        Bundle result = new Bundle();
+
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
         transaction.replace(R.id.mainLayout, newFragment);
         transaction.addToBackStack(null);
         transaction.commit();
     }
 
+
+    private void switchToFragment6(int deviceId) {
+        // Create a new instance of the Fragment6 class
+        Fragment newFragment = new Fragment6();
+
+        Bundle result = new Bundle();
+
+        result.putInt("deviceId", deviceId);
+
+        getParentFragmentManager().setFragmentResult("dataFromHomePage", result);
+
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        transaction.replace(R.id.mainLayout, newFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
 
 
     @Override
@@ -84,9 +105,8 @@ public class Fragment5 extends Fragment {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 SoundManager.playButtonSound(getContext());
-                 switchToFragment6();
+                switchToFragment6(1);
             }
         });
 
@@ -94,7 +114,7 @@ public class Fragment5 extends Fragment {
             @Override
             public void onClick(View v) {
                 SoundManager.playButtonSound(getContext());
-                switchToFragment6();
+                switchToFragment6(2);
             }
         });
 
@@ -102,7 +122,7 @@ public class Fragment5 extends Fragment {
             @Override
             public void onClick(View v) {
                 SoundManager.playButtonSound(getContext());
-                switchToFragment6();
+                switchToFragment6(3);
             }
         });
 
@@ -110,9 +130,8 @@ public class Fragment5 extends Fragment {
             @Override
             public void onClick(View v) {
                 SoundManager.playButtonSound(getContext());
-                switchToFragment6();
+                switchToFragment6(4);
             }
-
         });
 
 
@@ -123,10 +142,7 @@ public class Fragment5 extends Fragment {
                 Fragment7 popupFragment = Fragment7.newInstance();
                 popupFragment.show(getChildFragmentManager(), "PopupFragment");
             }
-
         });
-
-
 
         return rootView;
     }

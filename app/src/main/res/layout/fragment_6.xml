@@ -7,11 +7,11 @@
     android:background="#222222">
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/deviceIdTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:text="@string/name"
+        android:text="deviceId"
         android:textColor="@color/white"
         android:textSize="18sp"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
@@ -20,35 +20,49 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/deviceNameTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:layout_marginTop="40dp"
-        android:text="@string/type"
+        android:text="deviceName"
         android:textColor="@color/white"
         android:textSize="18sp"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView1" />
+        app:layout_constraintTop_toBottomOf="@+id/deviceIdTextView" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/deviceDescTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:layout_marginTop="192dp"
-        android:text="@string/status"
+        android:text="deviceDesc"
         android:textColor="@color/white"
         android:textSize="18sp"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/deviceNameTextView" />
+
+    <TextView
+        android:id="@+id/isWorkingTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_marginTop="192dp"
+        android:text="isWorking"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/deviceDescTextView" />
 
     <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/switch1"
+        android:id="@+id/isWorkingSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:checked="false"
@@ -56,7 +70,7 @@
         android:trackTint="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/deviceDescTextView" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"

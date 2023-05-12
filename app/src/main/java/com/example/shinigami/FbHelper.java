@@ -15,6 +15,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.w3c.dom.Document;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,7 +24,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class FbHelper {
-    private FirebaseFirestore db;
+    public FirebaseFirestore db;
     private String TAG = "FbHelper";
 
     public FbHelper(FirebaseFirestore db) {
@@ -147,8 +149,10 @@ public class FbHelper {
                             if (houseExist && userExist) {
                                 Log.d(TAG, "Both exist");
                                 // Main logic execution
-                                User retrievedUser = MainActivity.getUserById(userId);
-                                houseReference.collection("houseUsers").document(userId+"").set(retrievedUser);
+                                // todo: remove after refactoring
+//                                User retrievedUser = MainActivity.getUserById(userId);
+
+                                houseReference.collection("houseUsers").document(userId+"").set(userDocument.getData());
 
                             } else {
                                 Log.d(TAG, "Both do not exist");
@@ -163,14 +167,77 @@ public class FbHelper {
     public void addDeviceWithId(Device device) {
         Map<String, Object> deviceInfo = new HashMap<>();
         deviceInfo.put("deviceId", device.getDeviceId());
-        deviceInfo.put("deviceName ", device.getDeviceName());
+        deviceInfo.put("deviceName", device.getDeviceName());
         deviceInfo.put("deviceDesc", device.getDeviceDesc());
         deviceInfo.put("isWorking", device.getIsWorking());
+        deviceInfo.put("deviceStatuses", device.getDeviceStatuses());
 
         // Add a new device with Firebase Id as the Id
         db.collection("Devices")
                 .document(""+device.getDeviceId())
                 .set(deviceInfo);
+    }
+
+    public void addDeviceToHouse(int houseId, int deviceId) {
+        Log.d(TAG, "addDeviceToHouse");
+
+        DocumentReference houseReference = db.collection("Houses").document(houseId+"");
+        DocumentReference deviceReference = db.collection("Devices").document(deviceId+"");
+
+        // Create a list to hold the tasks
+        List<Task<DocumentSnapshot>> tasks = new ArrayList<>();
+
+        // Add house and user tasks to the list
+        tasks.add(houseReference.get());
+        tasks.add(deviceReference.get());
+
+        // Wait for all tasks to complete successfully
+        Tasks.whenAllSuccess(tasks)
+                .addOnCompleteListener(new OnCompleteListener<List<Object>>() {
+                    @Override
+                    public void onComplete(@NonNull Task<List<Object>> task) {
+                        if (task.isSuccessful()) {
+                            boolean houseExist = false;
+                            boolean deviceExist = false;
+
+                            // Get the results of the tasks
+                            List<Object> results = task.getResult();
+                            DocumentSnapshot houseDocument = (DocumentSnapshot) results.get(0);
+                            DocumentSnapshot deviceDocument = (DocumentSnapshot) results.get(1);
+
+                            // Check if house document exists
+                            if (houseDocument.exists()) {
+                                Log.d(TAG, "House with id "+ houseId +" exists: "+ houseDocument);
+                                houseExist = true;
+                            } else {
+                                Log.d(TAG, "House with id "+ houseId +" does not exist: "+ houseDocument);
+                            }
+
+                            // Check if device document exists
+                            if (deviceDocument.exists()) {
+                                Log.d(TAG, "Device with id "+ deviceId +" exists: "+ deviceDocument);
+                                deviceExist = true;
+                            } else {
+                                Log.d(TAG, "Device with id "+ deviceId +" does not exist: "+ deviceDocument);
+                            }
+
+                            // Check if both house and user exist and execute logic
+                            if (houseExist && deviceExist) {
+                                Log.d(TAG, "Both house and device exist");
+                                // Main logic execution
+//                                Device retrievedDevice = MainActivity.getDeviceById(deviceId);
+
+//                                houseReference.collection("houseDevices").document(deviceId+"").set(retrievedDevice);
+                                houseReference.collection("houseDevices").document(deviceId+"").set(deviceDocument.getData());
+
+                            } else {
+                                Log.d(TAG, "Both house and device do not exist");
+                            }
+                        } else {
+                            Log.d(TAG, "Failed with: ", task.getException());
+                        }
+                    }
+                });
     }
 
 
@@ -251,62 +318,40 @@ public class FbHelper {
 //        db.collection("Houses").document("HouseUsers").add(house);
     }
 
-    public void addDeviceToHouse(int houseId, int deviceId) {
-        Log.d(TAG, "addDeviceToHouse");
 
-        DocumentReference houseReference = db.collection("Houses").document(houseId+"");
-        DocumentReference deviceReference = db.collection("Devices").document(deviceId+"");
 
-        // Create a list to hold the tasks
-        List<Task<DocumentSnapshot>> tasks = new ArrayList<>();
-
-        // Add house and user tasks to the list
-        tasks.add(houseReference.get());
-        tasks.add(deviceReference.get());
-
-        // Wait for all tasks to complete successfully
-        Tasks.whenAllSuccess(tasks)
-                .addOnCompleteListener(new OnCompleteListener<List<Object>>() {
+    public void getDeviceInHouse(int deviceId,  int houseId) {
+        db.collection("Houses")
+                .document(houseId+"")
+                .collection("houseDevices")
+                .document(deviceId+"")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<List<Object>> task) {
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
-                            boolean houseExist = false;
-                            boolean deviceExist = false;
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                                String deviceId = Objects.requireNonNull(document.get("deviceId")).toString();
+                                String deviceName = Objects.requireNonNull(document.get("deviceName")).toString();
+                                String deviceDesc = Objects.requireNonNull(document.get("deviceDesc")).toString();
+                                String isWorking = Objects.requireNonNull(document.get("isWorking")).toString();
 
-                            // Get the results of the tasks
-                            List<Object> results = task.getResult();
-                            DocumentSnapshot houseDocument = (DocumentSnapshot) results.get(0);
-                            DocumentSnapshot deviceDocument = (DocumentSnapshot) results.get(1);
-
-                            // Check if house document exists
-                            if (houseDocument.exists()) {
-                                Log.d(TAG, "House with id "+ houseId +" exists: "+ houseDocument);
-                                houseExist = true;
+                                Log.d("GetDataFromFB", "deviceId: " + deviceId);
+                                Log.d("GetDataFromFB", "deviceName: " + deviceName);
+                                Log.d("GetDataFromFB", "deviceDesc: " + deviceDesc);
+                                Log.d("GetDataFromFB", "isWorking: " + isWorking);
+                                Device returnedDevice = new Device(Integer.parseInt(isWorking), deviceName, deviceDesc, Boolean.parseBoolean(isWorking) );
+//                                return returnedDevice;
                             } else {
-                                Log.d(TAG, "House with id "+ houseId +" does not exist: "+ houseDocument);
-                            }
-
-                            // Check if device document exists
-                            if (deviceDocument.exists()) {
-                                Log.d(TAG, "Device with id "+ deviceId +" exists: "+ deviceDocument);
-                                deviceExist = true;
-                            } else {
-                                Log.d(TAG, "Device with id "+ deviceId +" does not exist: "+ deviceDocument);
-                            }
-
-                            // Check if both house and user exist and execute logic
-                            if (houseExist && deviceExist) {
-                                Log.d(TAG, "Both house and device exist");
-                                // Main logic execution
-                                Device retrievedDevice = MainActivity.getDeviceById(deviceId);
-                                houseReference.collection("houseDevices").document(deviceId+"").set(retrievedDevice);
-                            } else {
-                                Log.d(TAG, "Both house and device do not exist");
+                                Log.d(TAG, "No such document");
                             }
                         } else {
-                            Log.d(TAG, "Failed with: ", task.getException());
+                            Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     }
                 });
+
     }
 }
