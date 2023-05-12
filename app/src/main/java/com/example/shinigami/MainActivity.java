@@ -45,41 +45,21 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-
-
-
 public class MainActivity extends AppCompatActivity implements Fragment3.OnUserInfoEnteredListener {
     public static FbHelper fbHelper;
     private String TAG = "MainActivity";
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference userRef = db.collection("Users");
-
     public static ArrayList<User> userList = new ArrayList<User>();
     private static ArrayList<House> houseList = new ArrayList<House>();
     private static ArrayList<Device> deviceList = new ArrayList<Device>();
 
-//    // Google Authentication
-//    ImageView googleButton;
-//
-//    GoogleSignInOptions googleSignInOptions;
-//    GoogleSignInClient googleSignInClient;
-
     public void onUserInfoEntered(String firstName, String lastName, String dateOfBirth) {   //Thanh this function has values already in it from fragment
         User user4 = new User( "4",firstName, lastName, dateOfBirth);
 
-//        userList.add(user4);
         fbHelper.addUserWithId(user4);
         fbHelper.addUserToHouse(1, "4");
-        Log.d("Fragment", firstName);
-
-
-//        // Replace fragment with Fragment4
-//        Fragment4 newFragment = new Fragment4();
-//        getSupportFragmentManager().beginTransaction()
-//                .replace(R.id.user_info, newFragment)
-//                .commit();
     }
-
 
         @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,29 +67,8 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
         setContentView(R.layout.hap);
 
         fbHelper = new FbHelper(db);
-        fbHelper.addUserToHouse(1,"1");
 
-        Device camera = new Device(1, "Camera", "Living Room Camera");
-        camera.addStatus("isOn", "yes");
-        camera.addStatus("motionDetected", "no");
-
-//            // TV device
-//            Device tv = new Device(2, "TV", "Bedroom TV");
-//            tv.addStatus("isOn", "yes");
-//            tv.addStatus("volume", "50");
-
-
-
-            fbHelper.addDeviceWithId(camera);
-//            fbHelper.addDeviceWithId(tv);
-        fbHelper.addDeviceToHouse(1, 1);
-//            fbHelper.addDeviceToHouse(1, 2);
-
-        Log.d("Refactor", "addUserToHouse");
 //        populateDatabase();
-
-
-
 
             SoundManager.playIntroSound(this);
             TextView textView = findViewById(R.id.hap_text);
@@ -133,58 +92,7 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
                             .commit();
                 }
             }, delayMillis);
-
-
-        //make a FbHelper object
-
-
-//        Example for Hamas
-//        int user1Id = user1.getUserId();
-//        String user1FirstName = user1.getFirstName();
-//        String user1LastName = user1.getFirstName();
-//        String user1Dob = user1.getDob();
-
-
-
-
-//        Device returnedDevice = fbHelper.getDeviceInHouse(1, 1);
-//        Log.d("ReturnedDevice", returnedDevice.getDeviceId()+"");
-//        Log.d("ReturnedDevice", returnedDevice.getDeviceName()+"");
-
-        // Google Authentication
-//        googleButton=findViewById(R.id.googleSigninButton);
-//        googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//                .requestEmail()
-//                .build();
-//
-//        googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
-//        googleButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                GoogleSignInHelper();
-//            }
-//        });
     }
-
-// todo: remove after refactoring
-//    public static User getUserById(String Id) {
-//        for (User user: userList) {
-//            if(user.getUserId().equals(Id)) {
-//                return user;
-//            }
-//        }
-//        return null;
-//    }
-
-    // todo: remove after refactoring
-//    public static Device getDeviceById(int Id) {
-//        for (Device device: deviceList) {
-//            if(device.getDeviceId() == Id) {
-//                return device;
-//            }
-//        }
-//        return null;
-//    }
 
     private void populateDatabase() {
         User user1 = new User( "1","Thanh Nhan", "Nguyen", "11-02-2002");
@@ -198,11 +106,7 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
         House house1 = new House( 1,"06 Bundoora Test Override");
         House house2 = new House( 2,"07 Bundoora");
         House house3 = new House(3,"08 Bundoora");
-//                Example for Hamas
-//        int house1Id = house1.getHouseId();
-//        String house1Address = house1.getHouseAddress();  // @Hamas you can use the address as the house name
-//        ArrayList<User> house1UserList = house1.getUsers();
-//        ArrayList<Device> house1DeviceList = house1.getDevices();
+
         houseList.add(house1);
         houseList.add(house2);
         houseList.add(house3);
@@ -211,11 +115,6 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
         Device camera = new Device(1, "Camera", "Living Room Camera");
         camera.addStatus("isOn", "yes");
         camera.addStatus("motionDetected", "no");
-//        Example for Hamas
-//        String deviceName = camera.getDeviceName();
-//        String deviceDesc = camera.getDeviceDesc();
-//        boolean isWorking = camera.getIsWorking();
-//        HashMap<String, String> statusList = camera.getDeviceStatuses();
 
 // TV device
         Device tv = new Device(2, "TV", "Bedroom TV");
@@ -232,7 +131,6 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
         thermometer.addStatus("isOn", "yes");
         thermometer.addStatus("temperature", "22");
         thermometer.addStatus("humidity", "40");
-
 
 // Add devices to list
         deviceList.add(camera);
@@ -261,46 +159,4 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
         fbHelper.addDeviceToHouse(1, 3);
         fbHelper.addDeviceToHouse(1, 4);
     }
-
-//    // Google authentication
-//    private void GoogleSignInHelper() {
-//        Intent intent = googleSignInClient.getSignInIntent();
-//        startActivityForResult(intent, 100);
-//    }
-//
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        if(requestCode == 100) {
-//            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-//            try{
-//                task.getResult(ApiException.class);
-//                AuthedHomeActivity();
-//            } catch (ApiException e) {
-//                Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
-//            }
-//        }
-//    }
-//
-//    private void AuthedHomeActivity() {
-//        finish();
-//        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-//        if(account!=null) {
-//            String name = account.getDisplayName();
-//            String userId = account.getId();
-//            String email = account.getEmail();
-//            String firstName = account.getGivenName();
-//            String lastName = account.getGivenName();
-//            String dob = "No data";
-//
-//            // nameTextView.setText(name + "" + email  +" " + firstName  +" " + lastName +" " + dob) ;
-//            User newUser = new User(email, firstName,lastName, dob );
-//            MainActivity.userList.add(newUser);
-//            fbHelper.addUserWithId(newUser);
-//        }
-//
-//        Intent intent = new Intent(getApplicationContext(), AuthedHomeActivity.class);
-//        startActivity(intent);
-//    }
 }

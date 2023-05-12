@@ -88,38 +88,6 @@ public class Fragment6 extends Fragment {
         TextView isWorkingTextView = rootView.findViewById(R.id.isWorkingTextView);
         SwitchCompat isWorkingSwitch = rootView.findViewById(R.id.isWorkingSwitch);
 
-
-
-//        isWorkingSwitch.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View view, MotionEvent motionEvent) {
-//                isTouched = true;
-//                return false;
-//            }
-//        });
-//
-//        isWorkingSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
-//        {
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
-//            {
-//                if (isTouched) {
-//                    Log.d("Switch", "Changed due to user");
-//                    isTouched = false;
-//                    if (isWorkingSwitch.isChecked()) {
-//                        Log.d("Switch", "Status: " + isWorkingSwitch.isChecked());
-//                        isWorkingSwitch.setChecked(false);
-//                        Log.d("Switch", "Toggle Off");
-//                    }
-//                    else {
-//                        Log.d("Switch", "Status: " + isWorkingSwitch.isChecked());
-//                        isWorkingSwitch.setChecked(true);
-//                        Log.d("Switch", "Toggle On");
-//                    }
-//                }
-//            }
-//        });
-
         isWorkingSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
         {
             @Override
@@ -169,7 +137,6 @@ public class Fragment6 extends Fragment {
                                 if (task.isSuccessful()) {
                                     DocumentSnapshot document = task.getResult();
                                     if (document.exists()) {
-//                                        Log.d("Refactor", "deviceName" + Objects.requireNonNull(document.get("deviceName")).toString());
                                         try {
                                             String deviceId = document.get("deviceId") == null ? "null" : document.get("deviceId").toString();
                                             String deviceName = document.get("deviceName") == null ? "null" : document.get("deviceName").toString();
@@ -206,8 +173,6 @@ public class Fragment6 extends Fragment {
                         });
             }
         });
-
-
 
         return rootView;
     }
