@@ -60,10 +60,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 public class MainActivity extends AppCompatActivity implements Fragment3.OnUserInfoEnteredListener {
-<<<<<<< HEAD
     public static FbHelper fbHelper;
-=======
->>>>>>> 49ef779 (clean code in MainActivity.java)
     private String TAG = "MainActivity";
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference userRef = db.collection("Users");
@@ -81,28 +78,7 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
         @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-<<<<<<< HEAD
         setContentView(R.layout.hap);
-=======
-        setContentView(R.layout.activity_main);
-
-            loginButton = findViewById(R.id.login_button);
-
-            loginButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Instantiate the new fragment
-                    Fragment newFragment = new Fragment3();
-
-                    // Replace the existing fragment in the container with the new one
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.mainLayout, newFragment)
-                            .commit();
-                }
-                });
-
-        //make a FbHelper object
->>>>>>> 49ef779 (clean code in MainActivity.java)
         fbHelper = new FbHelper(db);
 
 //        populateDatabase();
@@ -213,61 +189,6 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
         fbHelper.addDeviceToHouse(1, 4);
 
     }
-<<<<<<< HEAD
 }
 
 
-=======
-
-    public static Device getDeviceById(int Id) {
-        for (Device device: deviceList) {
-            if(device.getDeviceId() == Id) {
-                return device;
-            }
-        }
-        return null;
-    }
-
-    // Google authentication
-    private void GoogleSignInHelper() {
-        Intent intent = googleSignInClient.getSignInIntent();
-        startActivityForResult(intent, 100);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if(requestCode == 100) {
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try{
-                task.getResult(ApiException.class);
-                AuthedHomeActivity();
-            } catch (ApiException e) {
-                Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-    private void AuthedHomeActivity() {
-        finish();
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        if(account!=null) {
-            String name = account.getDisplayName();
-            String userId = account.getId();
-            String email = account.getEmail();
-            String firstName = account.getGivenName();
-            String lastName = account.getGivenName();
-            String dob = "No data";
-
-            // nameTextView.setText(name + "" + email  +" " + firstName  +" " + lastName +" " + dob) ;
-            User newUser = new User(email, firstName,lastName, dob );
-            MainActivity.userList.add(newUser);
-            fbHelper.addUserWithId(newUser);
-        }
-
-        Intent intent = new Intent(getApplicationContext(), AuthedHomeActivity.class);
-        startActivity(intent);
-    }
-}
->>>>>>> 49ef779 (clean code in MainActivity.java)
