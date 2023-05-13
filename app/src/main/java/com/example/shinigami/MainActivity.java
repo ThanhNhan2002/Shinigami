@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -37,6 +38,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 
@@ -45,15 +47,17 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 
 public class MainActivity extends AppCompatActivity implements Fragment3.OnUserInfoEnteredListener {
-
-    // for storing notification channel ID
+    // <-- Page's variables for notification -->
+// for storing notification channel ID
     private static final String CHANNEL_ID = "my_channel_id";
     //potentially redundant variable, didn't end up needing this
     public static final String notification_title = "Device status has changed: ";
 
+    // <-- Page's variables end -->
 
     private String TAG = "MainActivity";
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -85,6 +89,10 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
 //                .commit();
     }
 
+    public static MainActivity getInstance()
+    {
+        return MainActivity.getInstance();
+    }
 
 
     private Button loginButton;
@@ -93,8 +101,19 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+//            sendNotification("test");
 
-
+            SwitchMaterial switchNotification = findViewById(R.id.switch_notification);
+            switchNotification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+            {
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+                {
+                    if (isChecked)
+                    {
+                        sendNotification("Notifications Enabled");
+                    }
+                }
+            });
 
 
             loginButton = findViewById(R.id.login_button);
@@ -209,6 +228,7 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
             }
         });
 
+        // Google cloud messaging push notification
         MyFirebaseMessagingServices.getInstance().subscribeToTopic("News")
                 .addOnCompleteListener(new OnCompleteListener<Void>()
                 {
@@ -289,7 +309,7 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
         startActivity(intent);
     }
 
-    private void sendNotification(String messageBody)
+    public void sendNotification(String messageBody)
     {
         // Notification Builder
         NotificationCompat.Builder builder =

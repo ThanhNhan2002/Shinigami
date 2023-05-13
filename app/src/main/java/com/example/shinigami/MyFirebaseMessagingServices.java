@@ -3,6 +3,7 @@ package com.example.shinigami;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 
@@ -30,7 +31,7 @@ public class MyFirebaseMessagingServices extends FirebaseMessagingService
         super.onMessageReceived(remoteMessage);
         createNotificationChannel();
         getFirebaseMessage(remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody());
-
+//        MainActivity.getInstance().sendNotification( remoteMessage.getNotification().getBody()+"");
     }
 
     private void createNotificationChannel() {
@@ -44,7 +45,8 @@ public class MyFirebaseMessagingServices extends FirebaseMessagingService
             channel.setDescription("ThanhChannelDesc");
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+//            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.createNotificationChannel(channel);
         }
     }
@@ -53,13 +55,16 @@ public class MyFirebaseMessagingServices extends FirebaseMessagingService
     {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "myFirebaseChannel")
-                .setSmallIcon(R.drawable.ic_dialog_alert)
+                .setSmallIcon(R.drawable.ic_notification)
                 .setContentTitle(title)
                 .setContentText(msg)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true);
 
 
-        NotificationManagerCompat manager = NotificationManagerCompat.from(this);
+//        NotificationManagerCompat manager = NotificationManagerCompat.from(this);
+                NotificationManagerCompat manager = NotificationManagerCompat.from(getApplicationContext());
+
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED)
         {
             // TODO: Consider calling
