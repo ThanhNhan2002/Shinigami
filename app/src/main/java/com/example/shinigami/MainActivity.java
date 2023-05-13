@@ -101,7 +101,6 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//            sendNotification("test");
 
             SwitchMaterial switchNotification = findViewById(R.id.switch_notification);
             switchNotification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
