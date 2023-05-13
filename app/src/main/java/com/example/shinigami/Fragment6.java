@@ -75,7 +75,6 @@ public class Fragment6 extends Fragment {
         }
     }
 
-    static Boolean isTouched = false;
     static Boolean dataFetched = false;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
