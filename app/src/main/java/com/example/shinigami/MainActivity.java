@@ -207,6 +207,8 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
 
         }
 
+//     MyFirebaseMessagingServices.getFirebaseMessage();
+
 
     public static User getUserById(String Id) {
         for (User user: userList) {
