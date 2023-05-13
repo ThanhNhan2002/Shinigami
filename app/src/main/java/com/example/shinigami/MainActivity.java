@@ -34,6 +34,7 @@ import java.util.Objects;
 
 import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,6 +48,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 
@@ -55,10 +57,21 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class MainActivity extends AppCompatActivity implements Fragment3.OnUserInfoEnteredListener {
+<<<<<<< HEAD
 
     public static FbHelper fbHelper;
+=======
+    // <-- Page's variables for notification -->
+// for storing notification channel ID
+    private static final String CHANNEL_ID = "my_channel_id";
+    //potentially redundant variable, didn't end up needing this
+    public static final String notification_title = "Device status has changed: ";
+
+    // <-- Page's variables end -->
+>>>>>>> 34c1793 (push noti is working)
 
     private String TAG = "MainActivity";
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -74,11 +87,55 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
         fbHelper.addUserToHouse(1, "4");
     }
 
+<<<<<<< HEAD
+=======
+    public static MainActivity getInstance()
+    {
+        return MainActivity.getInstance();
+    }
+
+
+    private Button loginButton;
+>>>>>>> 34c1793 (push noti is working)
         @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.hap);
 
+<<<<<<< HEAD
+=======
+//            sendNotification("test");
+
+            SwitchMaterial switchNotification = findViewById(R.id.switch_notification);
+            switchNotification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+            {
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+                {
+                    if (isChecked)
+                    {
+                        sendNotification("Notifications Enabled");
+                    }
+                }
+            });
+
+
+            loginButton = findViewById(R.id.login_button);
+
+            loginButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Instantiate the new fragment
+                    Fragment newFragment = new Fragment3();
+
+                    // Replace the existing fragment in the container with the new one
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.mainLayout, newFragment)
+                            .commit();
+                }
+                });
+
+        //make a FbHelper object
+>>>>>>> 34c1793 (push noti is working)
         fbHelper = new FbHelper(db);
 
 //        populateDatabase();
@@ -171,6 +228,153 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
         fbHelper.addDeviceToHouse(1, 2);
         fbHelper.addDeviceToHouse(1, 3);
         fbHelper.addDeviceToHouse(1, 4);
+<<<<<<< HEAD
     }
 
+=======
+
+        // Google Authentication
+        googleButton=findViewById(R.id.googleSigninButton);
+        googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
+        googleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GoogleSignInHelper();
+            }
+        });
+
+        // Google cloud messaging push notification
+        MyFirebaseMessagingServices.getInstance().subscribeToTopic("News")
+                .addOnCompleteListener(new OnCompleteListener<Void>()
+                {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task)
+                    {
+                        String msg = "Done";
+                        if (!task.isSuccessful())
+                        {
+                            msg = "Failed";
+                        }
+                    }
+                });
+
+
+        }
+
+//     MyFirebaseMessagingServices.getFirebaseMessage();
+
+
+    public static User getUserById(String Id) {
+        for (User user: userList) {
+            if(user.getUserId().equals(Id)) {
+                return user;
+            }
+        }
+        return null;
+    }
+
+    public static Device getDeviceById(int Id) {
+        for (Device device: deviceList) {
+            if(device.getDeviceId() == Id) {
+                return device;
+            }
+        }
+        return null;
+    }
+
+    // Google authentication
+    private void GoogleSignInHelper() {
+        Intent intent = googleSignInClient.getSignInIntent();
+        startActivityForResult(intent, 100);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 100) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try{
+                task.getResult(ApiException.class);
+                AuthedHomeActivity();
+            } catch (ApiException e) {
+                Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void AuthedHomeActivity() {
+        finish();
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        if(account!=null) {
+            String name = account.getDisplayName();
+            String userId = account.getId();
+            String email = account.getEmail();
+            String firstName = account.getGivenName();
+            String lastName = account.getGivenName();
+            String dob = "No data";
+
+            // nameTextView.setText(name + "" + email  +" " + firstName  +" " + lastName +" " + dob) ;
+            User newUser = new User(email, firstName,lastName, dob );
+            MainActivity.userList.add(newUser);
+            fbHelper.addUserWithId(newUser);
+        }
+
+        Intent intent = new Intent(getApplicationContext(), AuthedHomeActivity.class);
+        startActivity(intent);
+    }
+
+    public void sendNotification(String messageBody)
+    {
+        // Notification Builder
+        NotificationCompat.Builder builder =
+                new NotificationCompat.Builder(this, CHANNEL_ID)
+                        .setSmallIcon(R.drawable.ic_notification)
+                        .setContentTitle(getString(R.string.notification_title))
+                        .setContentText(messageBody)
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+        // define a unique integer ID for the notification
+        int notificationId = 1;
+
+        // Pass notification ID to notification builder
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED)
+        {
+            // Request permissions
+            ActivityCompat.requestPermissions(this, new String[] {android.Manifest.permission.POST_NOTIFICATIONS}, notificationId);
+        } else
+        {
+            notificationManager.notify(notificationId, builder.build());
+        }
+
+        // check android version
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        {
+            // Define the channel name, description, and importance
+            CharSequence name = getString(R.string.channel_name);
+            String description = getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+
+            // declare notification channel with constructor
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+
+            // Set the channel description
+            channel.setDescription(description);
+
+            // get system notification, make channel
+            NotificationManager ntfManager = getSystemService(NotificationManager.class);
+            ntfManager.createNotificationChannel(channel);
+
+            // <-- Page's methods end -->
+        }
+    }
+>>>>>>> 34c1793 (push noti is working)
 }
