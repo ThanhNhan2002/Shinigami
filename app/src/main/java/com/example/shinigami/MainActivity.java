@@ -3,8 +3,16 @@ package com.example.shinigami;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
+
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 
 import android.view.View;
@@ -40,6 +48,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 
 public class MainActivity extends AppCompatActivity implements Fragment3.OnUserInfoEnteredListener {
+
+    // for storing notification channel ID
+    private static final String CHANNEL_ID = "my_channel_id";
+    //potentially redundant variable, didn't end up needing this
+    public static final String notification_title = "Device status has changed: ";
+
+
     private String TAG = "MainActivity";
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference userRef = db.collection("Users");
@@ -77,6 +92,10 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+
+
 
             loginButton = findViewById(R.id.login_button);
 
@@ -268,5 +287,54 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
 
         Intent intent = new Intent(getApplicationContext(), AuthedHomeActivity.class);
         startActivity(intent);
+    }
+
+    private void sendNotification(String messageBody)
+    {
+        // Notification Builder
+        NotificationCompat.Builder builder =
+                new NotificationCompat.Builder(this, CHANNEL_ID)
+                        .setSmallIcon(R.drawable.ic_notification)
+                        .setContentTitle(getString(R.string.notification_title))
+                        .setContentText(messageBody)
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+        // define a unique integer ID for the notification
+        int notificationId = 1;
+
+        // Pass notification ID to notification builder
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED)
+        {
+            // Request permissions
+            ActivityCompat.requestPermissions(this, new String[] {android.Manifest.permission.POST_NOTIFICATIONS}, notificationId);
+        } else
+        {
+            notificationManager.notify(notificationId, builder.build());
+        }
+
+        // check android version
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        {
+            // Define the channel name, description, and importance
+            CharSequence name = getString(R.string.channel_name);
+            String description = getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+
+            // declare notification channel with constructor
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+
+            // Set the channel description
+            channel.setDescription(description);
+
+            // get system notification, make channel
+            NotificationManager ntfManager = getSystemService(NotificationManager.class);
+            ntfManager.createNotificationChannel(channel);
+
+            // <-- Page's methods end -->
+        }
     }
 }
