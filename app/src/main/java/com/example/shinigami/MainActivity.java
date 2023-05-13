@@ -3,9 +3,20 @@ package com.example.shinigami;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
+
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+
 import android.media.MediaPlayer;
+
+import android.content.pm.PackageManager;
+import android.os.Build;
+
 import android.os.Bundle;
 
 import android.os.Handler;
@@ -23,6 +34,7 @@ import java.util.Objects;
 
 import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +48,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 
@@ -44,6 +57,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class MainActivity extends AppCompatActivity implements Fragment3.OnUserInfoEnteredListener {
     public static FbHelper fbHelper;
@@ -65,7 +79,6 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.hap);
-
         fbHelper = new FbHelper(db);
 
 //        populateDatabase();
@@ -92,7 +105,23 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
                             .commit();
                 }
             }, delayMillis);
-    }
+
+            // Google cloud messaging push notification
+            MyFirebaseMessagingServices.getInstance().subscribeToTopic("News")
+                .addOnCompleteListener(new OnCompleteListener<Void>()
+                {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task)
+                    {
+                        String msg = "Done";
+                        if (!task.isSuccessful())
+                        {
+                            msg = "Failed";
+                        }
+                    }
+                });
+            }
+
 
     private void populateDatabase() {
         User user1 = new User( "1","Thanh Nhan", "Nguyen", "11-02-2002");
@@ -158,5 +187,8 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
         fbHelper.addDeviceToHouse(1, 2);
         fbHelper.addDeviceToHouse(1, 3);
         fbHelper.addDeviceToHouse(1, 4);
+
     }
 }
+
+
