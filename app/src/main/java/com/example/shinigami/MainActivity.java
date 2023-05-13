@@ -78,42 +78,7 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
         @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-<<<<<<< HEAD
         setContentView(R.layout.hap);
-=======
-        setContentView(R.layout.activity_main);
-
-
-            SwitchMaterial switchNotification = findViewById(R.id.switch_notification);
-            switchNotification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
-            {
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
-                {
-                    if (isChecked)
-                    {
-                        sendNotification("Notifications Enabled");
-                    }
-                }
-            });
-
-
-            loginButton = findViewById(R.id.login_button);
-
-            loginButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Instantiate the new fragment
-                    Fragment newFragment = new Fragment3();
-
-                    // Replace the existing fragment in the container with the new one
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.mainLayout, newFragment)
-                            .commit();
-                }
-                });
-
-        //make a FbHelper object
->>>>>>> d0b4673 (clean code in file MyFirebaseMessagingServices)
         fbHelper = new FbHelper(db);
 
 //        populateDatabase();
