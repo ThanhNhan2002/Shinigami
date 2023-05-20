@@ -1,6 +1,5 @@
 package com.example.shinigami;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,7 +9,6 @@ import androidx.fragment.app.FragmentResultListener;
 
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
@@ -21,16 +19,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link Fragment6#newInstance} factory method to
+ * Use the {@link ItemPage#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Fragment6 extends Fragment {
+public class ItemPage extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -44,7 +40,7 @@ public class Fragment6 extends Fragment {
     private int fragmentDeviceId;
 
 
-    public Fragment6() {
+    public ItemPage() {
         // Required empty public constructor
     }
 
@@ -57,8 +53,8 @@ public class Fragment6 extends Fragment {
      * @return A new instance of fragment Fragment6.
      */
     // TODO: Rename and change types and number of parameters
-    public static Fragment6 newInstance(String param1, String param2) {
-        Fragment6 fragment = new Fragment6();
+    public static ItemPage newInstance(String param1, String param2) {
+        ItemPage fragment = new ItemPage();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -80,7 +76,7 @@ public class Fragment6 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_6, container, false);
+        View rootView = inflater.inflate(R.layout.item_page, container, false);
         TextView deviceIdTextView = rootView.findViewById(R.id.deviceIdTextView);
         TextView deviceNameTextView = rootView.findViewById(R.id.deviceNameTextView);
         TextView deviceDescTextView = rootView.findViewById(R.id.deviceDescTextView);

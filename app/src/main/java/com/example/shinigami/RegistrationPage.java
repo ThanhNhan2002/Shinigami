@@ -1,29 +1,23 @@
 package com.example.shinigami;
 
 import android.content.Context;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.appcompat.app.AppCompatActivity;
 
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.util.Objects;
 import androidx.fragment.app.FragmentTransaction;
 
-public class Fragment3 extends Fragment {
+public class RegistrationPage extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -32,12 +26,12 @@ public class Fragment3 extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public Fragment3() {
+    public RegistrationPage() {
         // Required empty public constructor
     }
 
-    public static Fragment3 newInstance(String param1, String param2) {
-        Fragment3 fragment = new Fragment3();
+    public static RegistrationPage newInstance(String param1, String param2) {
+        RegistrationPage fragment = new RegistrationPage();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -86,7 +80,7 @@ public class Fragment3 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_3, container, false);
+        View rootView = inflater.inflate(R.layout.registration_page, container, false);
         done_button = rootView.findViewById(R.id.done_button);
         first_name =  rootView.findViewById(R.id.text_firstname);
         last_name = rootView.findViewById(R.id.text_lastname);
@@ -138,7 +132,7 @@ public class Fragment3 extends Fragment {
 
 
                 // Instantiate the new fragment
-                Fragment newFragment = new Fragment4();
+                Fragment newFragment = new HouseIDPage();
 
                 FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
                 transaction.replace(R.id.mainLayout, newFragment);

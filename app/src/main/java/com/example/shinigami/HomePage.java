@@ -1,8 +1,5 @@
 package com.example.shinigami;
 
-import android.app.Dialog;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -11,19 +8,18 @@ import androidx.fragment.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.HashMap;
-
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link Fragment5#newInstance} factory method to
+ * Use the {@link HomePage#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Fragment5 extends Fragment {
+public class HomePage extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -32,12 +28,12 @@ public class Fragment5 extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public Fragment5() {
+    public HomePage() {
         // Required empty public constructor
     }
 
-    public static Fragment5 newInstance(String param1, String param2) {
-        Fragment5 fragment = new Fragment5();
+    public static HomePage newInstance(String param1, String param2) {
+        HomePage fragment = new HomePage();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -46,22 +42,12 @@ public class Fragment5 extends Fragment {
     }
 
 
-    private void switchToFragment6() {
-        // Create a new instance of the Fragment6 class
-        Fragment newFragment = new Fragment6();
 
-        Bundle result = new Bundle();
-
-        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-        transaction.replace(R.id.mainLayout, newFragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
-    }
 
 
     private void switchToFragment6(int deviceId) {
         // Create a new instance of the Fragment6 class
-        Fragment newFragment = new Fragment6();
+        Fragment newFragment = new ItemPage();
 
         Bundle result = new Bundle();
 
@@ -94,12 +80,13 @@ public class Fragment5 extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        View rootView = inflater.inflate(R.layout.page_two, container, false);
+        View rootView = inflater.inflate(R.layout.home_page, container, false);
         ImageButton button1 = rootView.findViewById(R.id.button1);
         ImageButton button2 = rootView.findViewById(R.id.button2);
         ImageButton button3 = rootView.findViewById(R.id.button3);
         ImageButton button4 = rootView.findViewById(R.id.button4);
         ImageButton button5 = rootView.findViewById(R.id.button5);
+        Button button6 = rootView.findViewById(R.id.button6);
 
         // Set onClickListener for each button
         button1.setOnClickListener(new View.OnClickListener() {
@@ -139,10 +126,26 @@ public class Fragment5 extends Fragment {
             @Override
             public void onClick(View v) {
                 SoundManager.playButtonSound(getContext());
-                Fragment7 popupFragment = Fragment7.newInstance();
+                NewItemPopup popupFragment = NewItemPopup.newInstance();
                 popupFragment.show(getChildFragmentManager(), "PopupFragment");
             }
         });
+
+
+        button6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SoundManager.playButtonSound(getContext());
+                LoginPage loginPage = new LoginPage();
+
+                // Replace the existing layout with Fragment2
+                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                transaction.replace(R.id.mainLayout, loginPage).commit();
+            }
+        });
+
+
+
 
         return rootView;
     }
