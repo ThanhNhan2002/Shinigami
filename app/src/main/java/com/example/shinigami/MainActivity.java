@@ -68,7 +68,9 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
     private static ArrayList<House> houseList = new ArrayList<House>();
     private static ArrayList<Device> deviceList = new ArrayList<Device>();
 
-    public void onUserInfoEntered(String firstName, String lastName, String dateOfBirth) {   //Thanh this function has values already in it from fragment
+    // handle the information that user enters in log in page
+    public void onUserInfoEntered(String firstName, String lastName, String dateOfBirth) {
+        // this onUserInfoEntered function has values already in it from fragment
         User user4 = new User( "4",firstName, lastName, dateOfBirth);
 
         fbHelper.addUserWithId(user4);
@@ -81,8 +83,7 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
         setContentView(R.layout.hap);
         fbHelper = new FbHelper(db);
 
-//        populateDatabase();
-
+            // Sound and Animation control
             SoundManager.playIntroSound(this);
             TextView textView = findViewById(R.id.hap_text);
             Animation animation = new AlphaAnimation(0.0f, 1.0f); // Change alpha from fully transparent to fully opaque
@@ -107,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
             }, delayMillis);
 
             // Google cloud messaging push notification
+            // Get an instance of MyFirebaseMessagingServices class
             MyFirebaseMessagingServices.getInstance().subscribeToTopic("News")
                 .addOnCompleteListener(new OnCompleteListener<Void>()
                 {
@@ -120,74 +122,83 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
                         }
                     }
                 });
-            }
+            // populateDatabase();
+    }
 
 
     private void populateDatabase() {
+        // Create some new users
         User user1 = new User( "1","Thanh Nhan", "Nguyen", "11-02-2002");
         User user2 = new User("2","Hamas", "Massood", "11-02-2002");
         User user3 = new User("3","Page", "Perret", "11-02-2002");
 
+        // Add users to userList
         userList.add(user1);
         userList.add(user2);
         userList.add(user3);
 
+        // Create some new houses
         House house1 = new House( 1,"06 Bundoora Test Override");
         House house2 = new House( 2,"07 Bundoora");
         House house3 = new House(3,"08 Bundoora");
 
+        // Add houses to houseList
         houseList.add(house1);
         houseList.add(house2);
         houseList.add(house3);
 
-// Camera device
+        // Camera device
         Device camera = new Device(1, "Camera", "Living Room Camera");
         camera.addStatus("isOn", "yes");
         camera.addStatus("motionDetected", "no");
 
-// TV device
+        // TV device
         Device tv = new Device(2, "TV", "Bedroom TV");
         tv.addStatus("isOn", "yes");
         tv.addStatus("volume", "50");
 
-// Fridge device
+        // Fridge device
         Device fridge = new Device(3, "Fridge", "Kitchen Fridge");
         fridge.addStatus("isOn", "yes");
         fridge.addStatus("temperature", "4");
 
-// Thermometer device
+        // Thermometer device
         Device thermometer = new Device(4, "Thermometer", "Bedroom Thermometer");
         thermometer.addStatus("isOn", "yes");
         thermometer.addStatus("temperature", "22");
         thermometer.addStatus("humidity", "40");
 
-// Add devices to list
+        // Add devices to list
         deviceList.add(camera);
         deviceList.add(tv);
         deviceList.add(fridge);
         deviceList.add(thermometer);
 
+        // Add houseList to Firebase
         for(House house: houseList) {
             fbHelper.addHouseWithId(house);
         }
 
+        // // Add userList to Firebase
         for(User user: userList) {
             fbHelper.addUserWithId(user);
         }
 
+        // Add deviceList to Firebase
         for(Device device: deviceList) {
             fbHelper.addDeviceWithId(device);
         }
 
+        // Add users to houses
         fbHelper.addUserToHouse(1,"1");
         fbHelper.addUserToHouse(1,"2");
         fbHelper.addUserToHouse(2,"3");
 
+        // Add devices to houses
         fbHelper.addDeviceToHouse(1, 1);
         fbHelper.addDeviceToHouse(1, 2);
         fbHelper.addDeviceToHouse(1, 3);
         fbHelper.addDeviceToHouse(1, 4);
-
     }
 }
 
