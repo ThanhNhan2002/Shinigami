@@ -1,67 +1,48 @@
 package com.example.shinigami;
 
-import android.app.Dialog;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.content.Intent;
 import android.os.Bundle;
+import android.app.Activity;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.HashMap;
-
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link Fragment5#newInstance} factory method to
+ * Use the {@link HomePage#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Fragment5 extends Fragment {
+public class HomePage extends Fragment {
+    GoogleSignInOptions googleSignInOptions;
 
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public Fragment5() {
+    public HomePage() {
         // Required empty public constructor
     }
 
-    public static Fragment5 newInstance(String param1, String param2) {
-        Fragment5 fragment = new Fragment5();
+    public static HomePage newInstance(String param1, String param2) {
+        HomePage fragment = new HomePage();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
 
-
-    private void switchToFragment6() {
-        // Create a new instance of the Fragment6 class
-        Fragment newFragment = new Fragment6();
-
-        Bundle result = new Bundle();
-
-        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-        transaction.replace(R.id.mainLayout, newFragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
-    }
-
-
-    private void switchToFragment6(int deviceId) {
-        // Create a new instance of the Fragment6 class
-        Fragment newFragment = new Fragment6();
+    private void switchToItemPageFragment(int deviceId) {
+        // Create a new instance of the ItemPage class
+        Fragment newFragment = new ItemPage();
 
         Bundle result = new Bundle();
 
@@ -75,38 +56,37 @@ public class Fragment5 extends Fragment {
         transaction.commit();
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            // handle the parameters
         }
     }
 
+    // get an instance of the Firebase database
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    // create a collection reference to devices collection
     CollectionReference devicesRef = db.collection("devices");
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
-        View rootView = inflater.inflate(R.layout.page_two, container, false);
+        View rootView = inflater.inflate(R.layout.home_page, container, false);
         ImageButton button1 = rootView.findViewById(R.id.button1);
         ImageButton button2 = rootView.findViewById(R.id.button2);
         ImageButton button3 = rootView.findViewById(R.id.button3);
         ImageButton button4 = rootView.findViewById(R.id.button4);
-        ImageButton button5 = rootView.findViewById(R.id.button5);
+        ImageButton addDeviceButton = rootView.findViewById(R.id.addDeviceButton);
+        Button logOutButton = rootView.findViewById(R.id.logOutButton);
 
         // Set onClickListener for each button
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SoundManager.playButtonSound(getContext());
-                switchToFragment6(1);
+                switchToItemPageFragment(1);
             }
         });
 
@@ -114,7 +94,7 @@ public class Fragment5 extends Fragment {
             @Override
             public void onClick(View v) {
                 SoundManager.playButtonSound(getContext());
-                switchToFragment6(2);
+                switchToItemPageFragment(2);
             }
         });
 
@@ -122,7 +102,7 @@ public class Fragment5 extends Fragment {
             @Override
             public void onClick(View v) {
                 SoundManager.playButtonSound(getContext());
-                switchToFragment6(3);
+                switchToItemPageFragment(3);
             }
         });
 
@@ -130,20 +110,42 @@ public class Fragment5 extends Fragment {
             @Override
             public void onClick(View v) {
                 SoundManager.playButtonSound(getContext());
-                switchToFragment6(4);
+                switchToItemPageFragment(4);
             }
         });
 
-
-        button5.setOnClickListener(new View.OnClickListener() {
+        addDeviceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SoundManager.playButtonSound(getContext());
-                Fragment7 popupFragment = Fragment7.newInstance();
+                NewItemPopup popupFragment = NewItemPopup.newInstance();
                 popupFragment.show(getChildFragmentManager(), "PopupFragment");
             }
         });
 
+        // log out button
+        logOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SoundManager.playButtonSound(getContext());
+                SignOut();
+
+                LoginPage loginPage = new LoginPage();
+                // Replace the existing layout with LoginPage
+                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                transaction.replace(R.id.mainLayout, loginPage).commit();
+            }
+        });
         return rootView;
+    }
+    public void SignOut() {
+        GoogleSignInClient googleSignInClient = LoginPage.googleSignInClient;
+        googleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                // finish();
+                startActivity(new Intent(getContext(), MainActivity.class));
+            }
+        });
     }
 }

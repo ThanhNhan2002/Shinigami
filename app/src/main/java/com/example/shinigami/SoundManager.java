@@ -3,7 +3,6 @@ package com.example.shinigami;
 import android.media.MediaPlayer;
 import android.content.Context;
 
-
 public class SoundManager {
     public static void playButtonSound(Context context) {
         MediaPlayer mp = MediaPlayer.create(context, R.raw.sound);

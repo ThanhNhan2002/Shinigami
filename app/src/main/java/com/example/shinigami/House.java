@@ -13,7 +13,6 @@ public class House {
         this.houseId = houseId;
         this.houseAddress = houseAddress;
         Collections.copy(userList, this.userList);
-        //this.userList = userList;
     }
 
     public House(int houseId, String houseAddress) {

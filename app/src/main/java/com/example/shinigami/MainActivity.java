@@ -1,65 +1,26 @@
 package com.example.shinigami;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-import androidx.fragment.app.Fragment;
-
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.content.Intent;
-
-import android.media.MediaPlayer;
-
-import android.content.pm.PackageManager;
-import android.os.Build;
 
 import android.os.Bundle;
 
 import android.os.Handler;
-import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.widget.Button;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 
-import android.util.Log;
-import android.view.View;
-import android.widget.CompoundButton;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.messaging.FirebaseMessaging;
 
-public class MainActivity extends AppCompatActivity implements Fragment3.OnUserInfoEnteredListener {
+public class MainActivity extends AppCompatActivity implements RegistrationPage.OnUserInfoEnteredListener {
     public static FbHelper fbHelper;
     private String TAG = "MainActivity";
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -76,7 +37,6 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
         fbHelper.addUserWithId(user4);
         fbHelper.addUserToHouse(1, "4");
     }
-
         @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,11 +58,11 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
                 @Override
                 public void run() {
                     // Create a new instance of Fragment2
-                    Fragment2 fragment2 = new Fragment2();
+                    LoginPage loginPage = new LoginPage();
 
                     // Replace the existing layout with Fragment2
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.mainLayout, fragment2)
+                            .replace(R.id.mainLayout, loginPage)
                             .commit();
                 }
             }, delayMillis);
@@ -124,7 +84,6 @@ public class MainActivity extends AppCompatActivity implements Fragment3.OnUserI
                 });
             // populateDatabase();
     }
-
 
     private void populateDatabase() {
         // Create some new users
