@@ -18,14 +18,6 @@ import android.widget.TextView;
 import androidx.fragment.app.FragmentTransaction;
 
 public class RegistrationPage extends Fragment {
-
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     public RegistrationPage() {
         // Required empty public constructor
     }
@@ -33,8 +25,6 @@ public class RegistrationPage extends Fragment {
     public static RegistrationPage newInstance(String param1, String param2) {
         RegistrationPage fragment = new RegistrationPage();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -47,18 +37,13 @@ public class RegistrationPage extends Fragment {
 
     private OnUserInfoEnteredListener onUserInfoEnteredListener;
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-
+            // handle the parameters
         }
     }
-
-
 
     public interface OnUserInfoEnteredListener {
         void onUserInfoEntered(String firstName, String lastName, String dob);
@@ -73,8 +58,6 @@ public class RegistrationPage extends Fragment {
                     + " must implement OnUserInfoEnteredListener");
         }
     }
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -130,7 +113,6 @@ public class RegistrationPage extends Fragment {
                 if (onUserInfoEnteredListener != null) {
                     onUserInfoEnteredListener.onUserInfoEntered(firstName, lastName, dateOfBirth);}
 
-
                 // Instantiate the new fragment
                 Fragment newFragment = new HouseIDPage();
 
@@ -140,14 +122,7 @@ public class RegistrationPage extends Fragment {
                 transaction.commit();
             }
 
-    });
-
-        return rootView;}
-
-    /*
-        public void setOnUserInfoEnteredListener(OnUserInfoEnteredListener listener) {
-        this.onUserInfoEnteredListener = listener;}
-        */
-
-
+        });
+        return rootView;
+    }
 }

@@ -28,13 +28,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
  */
 public class HomePage extends Fragment {
     GoogleSignInOptions googleSignInOptions;
-//    GoogleSignInClient googleSignInClient;
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public HomePage() {
         // Required empty public constructor
@@ -43,13 +36,11 @@ public class HomePage extends Fragment {
     public static HomePage newInstance(String param1, String param2) {
         HomePage fragment = new HomePage();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
 
-    private void switchToFragment6(int deviceId) {
+    private void switchToItemPageFragment(int deviceId) {
         // Create a new instance of the ItemPage class
         Fragment newFragment = new ItemPage();
 
@@ -69,8 +60,7 @@ public class HomePage extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            // handle the parameters
         }
     }
 
@@ -88,15 +78,15 @@ public class HomePage extends Fragment {
         ImageButton button2 = rootView.findViewById(R.id.button2);
         ImageButton button3 = rootView.findViewById(R.id.button3);
         ImageButton button4 = rootView.findViewById(R.id.button4);
-        ImageButton button5 = rootView.findViewById(R.id.button5);
-        Button button6 = rootView.findViewById(R.id.button6);
+        ImageButton addDeviceButton = rootView.findViewById(R.id.addDeviceButton);
+        Button logOutButton = rootView.findViewById(R.id.logOutButton);
 
         // Set onClickListener for each button
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SoundManager.playButtonSound(getContext());
-                switchToFragment6(1);
+                switchToItemPageFragment(1);
             }
         });
 
@@ -104,7 +94,7 @@ public class HomePage extends Fragment {
             @Override
             public void onClick(View v) {
                 SoundManager.playButtonSound(getContext());
-                switchToFragment6(2);
+                switchToItemPageFragment(2);
             }
         });
 
@@ -112,7 +102,7 @@ public class HomePage extends Fragment {
             @Override
             public void onClick(View v) {
                 SoundManager.playButtonSound(getContext());
-                switchToFragment6(3);
+                switchToItemPageFragment(3);
             }
         });
 
@@ -120,12 +110,11 @@ public class HomePage extends Fragment {
             @Override
             public void onClick(View v) {
                 SoundManager.playButtonSound(getContext());
-                switchToFragment6(4);
+                switchToItemPageFragment(4);
             }
         });
 
-
-        button5.setOnClickListener(new View.OnClickListener() {
+        addDeviceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SoundManager.playButtonSound(getContext());
@@ -134,22 +123,19 @@ public class HomePage extends Fragment {
             }
         });
 
-
         // log out button
-        button6.setOnClickListener(new View.OnClickListener() {
+        logOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SoundManager.playButtonSound(getContext());
                 SignOut();
 
                 LoginPage loginPage = new LoginPage();
-
                 // Replace the existing layout with LoginPage
                 FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
                 transaction.replace(R.id.mainLayout, loginPage).commit();
             }
         });
-
         return rootView;
     }
     public void SignOut() {

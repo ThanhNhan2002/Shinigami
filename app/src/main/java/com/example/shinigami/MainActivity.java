@@ -19,7 +19,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 public class MainActivity extends AppCompatActivity implements RegistrationPage.OnUserInfoEnteredListener {
     public static FbHelper fbHelper;
@@ -38,7 +37,6 @@ public class MainActivity extends AppCompatActivity implements RegistrationPage.
         fbHelper.addUserWithId(user4);
         fbHelper.addUserToHouse(1, "4");
     }
-
         @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,7 +84,6 @@ public class MainActivity extends AppCompatActivity implements RegistrationPage.
                 });
             // populateDatabase();
     }
-
 
     private void populateDatabase() {
         // Create some new users

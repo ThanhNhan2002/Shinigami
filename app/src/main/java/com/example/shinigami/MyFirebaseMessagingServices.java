@@ -19,7 +19,6 @@ import com.google.firebase.messaging.RemoteMessage;
 
 public class MyFirebaseMessagingServices extends FirebaseMessagingService
 {
-
     public static FirebaseMessaging getInstance()
     {
         return FirebaseMessaging.getInstance();
@@ -49,7 +48,6 @@ public class MyFirebaseMessagingServices extends FirebaseMessagingService
 
     public void getFirebaseMessage(String title, String msg)
     {
-
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "myFirebaseChannel")
                 .setSmallIcon(R.drawable.ic_notification)
                 .setContentTitle(title)
@@ -57,13 +55,11 @@ public class MyFirebaseMessagingServices extends FirebaseMessagingService
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true);
 
-
-//        NotificationManagerCompat manager = NotificationManagerCompat.from(this);
-                NotificationManagerCompat manager = NotificationManagerCompat.from(getApplicationContext());
+        NotificationManagerCompat manager = NotificationManagerCompat.from(getApplicationContext());
 
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED)
         {
-            // TODO: Consider calling
+            // Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
             //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
@@ -73,7 +69,6 @@ public class MyFirebaseMessagingServices extends FirebaseMessagingService
             return;
         }
         manager.notify(101, builder.build());
-
     }
 }
 

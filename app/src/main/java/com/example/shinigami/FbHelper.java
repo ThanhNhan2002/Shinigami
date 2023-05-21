@@ -1,9 +1,7 @@
 package com.example.shinigami;
 
 import android.util.Log;
-
 import androidx.annotation.NonNull;
-
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -14,9 +12,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
-import org.w3c.dom.Document;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -240,12 +235,8 @@ public class FbHelper {
                 });
     }
 
-
-
-    // could-be-use-in-the-future functions
+    // utils function
     public void getUsers () {
-//        DocumentReference document = db.collection("Users").document("AOgFm3Si1WXALt1DCj7o");
-//        document.get().addOnSuccessListener()
         db.collection("Users")
                 .get ( )
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -310,15 +301,7 @@ public class FbHelper {
                         Log.w(TAG, "Error adding House document", e);
                     }
                 });
-
-//        Map<String, Object> user1 = new HashMap<>();
-//        user1.put("houseId", h.getHouseId());
-//        user1.put("houseAddress ", h.getHouseAddress());
-
-//        db.collection("Houses").document("HouseUsers").add(house);
     }
-
-
 
     public void getDeviceInHouse(int deviceId,  int houseId) {
         db.collection("Houses")
@@ -343,7 +326,6 @@ public class FbHelper {
                                 Log.d("GetDataFromFB", "deviceDesc: " + deviceDesc);
                                 Log.d("GetDataFromFB", "isWorking: " + isWorking);
                                 Device returnedDevice = new Device(Integer.parseInt(isWorking), deviceName, deviceDesc, Boolean.parseBoolean(isWorking) );
-//                                return returnedDevice;
                             } else {
                                 Log.d(TAG, "No such document");
                             }
@@ -352,6 +334,5 @@ public class FbHelper {
                         }
                     }
                 });
-
     }
 }

@@ -14,16 +14,6 @@ import android.widget.TextView;
 
 
 public class HouseIDPage extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     public HouseIDPage() {
         // Required empty public constructor
     }
@@ -40,12 +30,9 @@ public class HouseIDPage extends Fragment {
     public static HouseIDPage newInstance(String param1, String param2) {
         HouseIDPage fragment = new HouseIDPage();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
-
 
     Button done_button2;
 
@@ -53,13 +40,11 @@ public class HouseIDPage extends Fragment {
 
     TextView enter_houseid;
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            //handle parameters
         }
     }
 
@@ -67,18 +52,14 @@ public class HouseIDPage extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
-        // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.houseid_page, container, false);
         done_button2 = rootView.findViewById(R.id.done_button2);
         houseid_input =  rootView.findViewById(R.id.houseid_input);
         enter_houseid = rootView.findViewById(R.id.enter_houseid);
 
-
         done_button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 SoundManager.playButtonSound(getContext());
 
                 // Get the entered house ID
@@ -89,15 +70,11 @@ public class HouseIDPage extends Fragment {
                 // Create a new instance of the Fragment5 class
                 HomePage newFragment = new HomePage();
 
-
                 FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
                 transaction.replace(R.id.mainLayout, newFragment);
                 transaction.addToBackStack(null);
                 transaction.commit();}
         });
-
-
         return rootView;
     }
-
 }

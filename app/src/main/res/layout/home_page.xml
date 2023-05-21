@@ -7,7 +7,7 @@
     android:background="#222222">
 
     <android.widget.Button
-        android:id="@+id/button6"
+        android:id="@+id/logOutButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Logout"
@@ -105,7 +105,7 @@
     </LinearLayout>
 
     <ImageButton
-        android:id="@+id/button5"
+        android:id="@+id/addDeviceButton"
         android:layout_width="90dp"
         android:layout_height="90dp"
         android:layout_margin="16dp"

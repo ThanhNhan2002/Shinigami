@@ -39,20 +39,6 @@ public class AuthedHomeActivity extends AppCompatActivity {
 
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
 
-//        if(account!=null) {
-//            String name = account.getDisplayName();
-//            String userId = account.getId();
-//            String email = account.getEmail();
-//            String firstName = account.getGivenName();
-//            String lastName = account.getGivenName();
-//            String dob = "No data";
-//
-//            nameTextView.setText(name + "" + email  +" " + firstName  +" " + lastName +" " + dob) ;
-//            User newUser = new User(email, firstName,lastName, dob );
-//            MainActivity.userList.add(newUser);
-////            fbHelper.addUserWithId(user);
-//        }
-
         signOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
