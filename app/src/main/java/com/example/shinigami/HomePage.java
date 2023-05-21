@@ -1,7 +1,10 @@
 package com.example.shinigami;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.app.Activity;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -11,6 +14,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -20,7 +27,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
  * create an instance of this fragment.
  */
 public class HomePage extends Fragment {
-
+    GoogleSignInOptions googleSignInOptions;
+//    GoogleSignInClient googleSignInClient;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -41,12 +49,8 @@ public class HomePage extends Fragment {
         return fragment;
     }
 
-
-
-
-
     private void switchToFragment6(int deviceId) {
-        // Create a new instance of the Fragment6 class
+        // Create a new instance of the ItemPage class
         Fragment newFragment = new ItemPage();
 
         Bundle result = new Bundle();
@@ -61,7 +65,6 @@ public class HomePage extends Fragment {
         transaction.commit();
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,15 +74,15 @@ public class HomePage extends Fragment {
         }
     }
 
+    // get an instance of the Firebase database
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    // create a collection reference to devices collection
     CollectionReference devicesRef = db.collection("devices");
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
         View rootView = inflater.inflate(R.layout.home_page, container, false);
         ImageButton button1 = rootView.findViewById(R.id.button1);
         ImageButton button2 = rootView.findViewById(R.id.button2);
@@ -132,21 +135,31 @@ public class HomePage extends Fragment {
         });
 
 
+        // log out button
         button6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SoundManager.playButtonSound(getContext());
+                SignOut();
+
                 LoginPage loginPage = new LoginPage();
 
-                // Replace the existing layout with Fragment2
+                // Replace the existing layout with LoginPage
                 FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
                 transaction.replace(R.id.mainLayout, loginPage).commit();
             }
         });
 
-
-
-
         return rootView;
+    }
+    public void SignOut() {
+        GoogleSignInClient googleSignInClient = LoginPage.googleSignInClient;
+        googleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                // finish();
+                startActivity(new Intent(getContext(), MainActivity.class));
+            }
+        });
     }
 }

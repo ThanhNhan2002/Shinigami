@@ -88,8 +88,8 @@ public class LoginPage extends Fragment {
         transaction.commit();
     }
 
-    GoogleSignInOptions googleSignInOptions;
-    GoogleSignInClient googleSignInClient;
+    public static GoogleSignInOptions googleSignInOptions;
+    public static GoogleSignInClient googleSignInClient;
     // Google authentication
     private void GoogleSignInHelper() {
             Log.d("GG", "Inside GG Sign in Helper");
